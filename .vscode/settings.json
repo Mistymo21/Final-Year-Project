@@ -1,0 +1,8 @@
+{
+    "tabnine.codeLensEnabled": true,
+    "tailwindCSS.experimental.classRegex": [
+
+    ],
+    "reactSnippets.settings.prettierEnabled": true,
+    "prettier.bracketSameLine": true
+}

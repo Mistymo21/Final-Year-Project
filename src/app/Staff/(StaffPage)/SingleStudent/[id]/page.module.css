@@ -1,0 +1,73 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    overflow: hidden;
+
+}
+.info{
+    height: 5100px;
+    width: 500px;
+
+}
+.img{
+    border: 1px solid black;
+    height: 300px;
+    border-radius: 10px;
+    width: 300px;
+    object-fit: cover;
+
+}
+
+.seperator{
+    height: 100%;
+    border: 1px solid black;
+    width: thin;
+    background-color: black;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.details{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.imgBox{
+    display: flex;
+    gap: 20px;
+    width: 70%;
+    margin-top: 30px;
+}
+
+.btns{
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+}
+
+.btns button{
+    border: 1px solid black;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.accept{
+    background-color: rgb(27, 205, 27);
+    color: white;
+}
+
+
+
+.reject{
+    background-color: red;
+    color: white;
+}
+
+.accept:hover{
+    background-color: rgb(96, 201, 96);
+}
+.reject:hover{
+    background-color: rgb(193, 74, 74);
+}
