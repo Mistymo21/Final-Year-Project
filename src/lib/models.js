@@ -74,6 +74,14 @@ const StaffSchema = new mongoose.Schema({
       required: true,
       trim: true,
     },
+    department:{
+      type: String,
+      required: true
+    },
+    faculty:{
+      type: String,
+      required: true
+    },
     unit: {
       type: String,
       enumerator: ["Hod", "Faculty Officer", "Level adviser"],

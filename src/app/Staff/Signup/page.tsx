@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import styles from"./StaffReg.module.css";
+import styles from "./StaffReg.module.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -15,18 +15,21 @@ function SignupPage() {
     confirm_password: "",
     staff_id: "",
     unit: "",
+    faculty: "",
+    department: "api",
   });
 
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
   // const [passwordMismatchError, setPasswordMismatchError] = React.useState('');
-  const [confirmPasswordMismatchError, setConfirmPasswordMismatchError] = React.useState('');
+  const [confirmPasswordMismatchError, setConfirmPasswordMismatchError] =
+    React.useState("");
 
   const onSignup = async (e) => {
     e.preventDefault();
     if (user.password !== user.confirm_password) {
-      setConfirmPasswordMismatchError('Password does not match!!!');
+      setConfirmPasswordMismatchError("Password does not match!!!");
       return;
     }
     try {
@@ -51,7 +54,8 @@ function SignupPage() {
       user.email.length > 0 &&
       user.confirm_password.length > 0 &&
       user.password.length > 0 &&
-      user.staff_id.length > 0
+      user.faculty.length > 0 &&
+      user.department.length > 0
     ) {
       setButtonDisabled(false);
     } else {
@@ -60,10 +64,14 @@ function SignupPage() {
   }, [user]);
 
   useEffect(() => {
-    if (user.password && user.confirm_password && user.password !== user.confirm_password) {
-      setConfirmPasswordMismatchError('Password does not match!!!');
+    if (
+      user.password &&
+      user.confirm_password &&
+      user.password !== user.confirm_password
+    ) {
+      setConfirmPasswordMismatchError("Password does not match!!!");
     } else {
-      setConfirmPasswordMismatchError('');
+      setConfirmPasswordMismatchError("");
     }
   }, [user.password, user.confirm_password]);
 
@@ -73,7 +81,7 @@ function SignupPage() {
         <div className={styles.wrap}>
           <div className={styles.mt}>
             <form action="#" className={styles.form} onSubmit={onSignup}>
-              <h1 className="text-white mt-7 ml-6 text-3xl">
+              <h1 className={styles.heading}>
                 {loading ? "Processing..." : " Signup"}
               </h1>
               {error && <p style={{ color: "red" }}>{error}</p>}
@@ -112,9 +120,7 @@ function SignupPage() {
                 <input
                   type="email"
                   value={user.email}
-                  onChange={(e) =>
-                    setUser({ ...user, email: e.target.value })
-                  }
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
                   placeholder="johndoe@alhikmah.edu.ng"
                 />
                 <label htmlFor="unit">Unit</label>
@@ -122,15 +128,52 @@ function SignupPage() {
                   name="unit"
                   id="unit"
                   value={user.unit}
-                  onChange={(e) =>
-                    setUser({ ...user, unit: e.target.value })
-                  }
-                >
-                  <option value="hidden" className="text-black">Choose unit</option>
-                  <option value="Faculty Officer" className="text-black">Faculty Officer</option>
-                  <option value="HOD" className="text-black">HOD</option>
-                  <option value="Level adviser" className="text-black">Level adviser</option>
+                  onChange={(e) => setUser({ ...user, unit: e.target.value })}>
+                  <option value="hidden" className="text-black">
+                    Choose unit
+                  </option>
+                  <option value="Faculty Officer" className="text-black">
+                    Faculty Officer
+                  </option>
+                  <option value="HOD" className="text-black">
+                    HOD
+                  </option>
+                  <option value="Level adviser" className="text-black">
+                    Level adviser
+                  </option>
                 </select>
+
+                <label htmlFor="faculty">Faculty</label>
+                <select
+                  name="faculty"
+                  id="faculty"
+                  value={user.faculty}
+                  onChange={(e) =>
+                    setUser({ ...user, faculty: e.target.value })
+                  }>
+                  <option value="hidden">Choose Faculty</option>
+                  <option value="Faculty Of Computing Engineering & Technology">
+                    Faculty Of Computing Engineering & Technology
+                  </option>
+                  <option value="Natural and Applied Science">
+                    Faculty Of Natural and Applied Science
+                  </option>
+                </select>
+
+                <label htmlFor="faculty">Department</label>
+                <select
+                  name="dept"
+                  id="dept"
+                  value={user.department}
+                  onChange={(e) =>
+                    setUser({ ...user, department: e.target.value })
+                  }>
+                  <option value="hidden">Choose Department</option>
+                  <option value="computer">Computer Science</option>
+                  <option value="software">Software</option>
+                  <option value="cyber">Cyber Security</option>
+                </select>
+
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
@@ -153,11 +196,9 @@ function SignupPage() {
                 />
                 {confirmPasswordMismatchError && (
                   <p style={{ color: "red" }}>{confirmPasswordMismatchError}</p>
-                 )}
-                
-                
+                )}
               </div>
-              <div className={styles.btnWrap}>
+              <div className={styles.btnWrap}>
                 <button className={styles.btn} onClick={onSignup}>
                   {buttonDisabled ? "No Signup" : "Signup"}
                 </button>

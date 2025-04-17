@@ -1,11 +1,11 @@
 import React from "react";
-import "./Student.css";
+import styles from "./student.module.css"
 import Link from "next/link";
 
 function page() {
   return (
     <>
-      <div className="parent-wrapper">
+      {/* <div className="parent-wrapper">
         <div className="child-wrapper">
           <div className="student btnChs">
             <Link href="Student/Login">
@@ -18,7 +18,23 @@ function page() {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
+       <div className={styles.container}>
+    <div className={styles.buttons}>
+        <Link href="Student/Login">
+      <button>
+      
+      Login
+      </button>
+        </Link>
+        <Link href="Student/Signup">
+      <button>
+        
+         Signup
+      </button>
+        </Link>
+    </div>
+  </div>
     </>
   );
 }

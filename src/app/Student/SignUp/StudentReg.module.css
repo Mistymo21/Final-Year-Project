@@ -40,6 +40,11 @@
   max-width: 90%;
 }
 
+.formE label{
+  color: white;
+  font-weight: bold;
+}
+
 .formS input {
   width: 100%;
   border: none;
@@ -48,6 +53,7 @@
   padding: 8px;
   border-radius: 5px;
 }
+
 
 .btnWrap {
   display: flex;

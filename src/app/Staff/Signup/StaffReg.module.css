@@ -33,6 +33,15 @@
   border-radius: 8px;
 }
 
+.heading{
+  color: white;
+}
+
+.form label{
+  color: white;
+  font-weight: bold;
+}
+
 .formE {
   display: grid;
   grid-template-columns: 1fr 1fr;

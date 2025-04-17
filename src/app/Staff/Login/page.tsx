@@ -75,7 +75,7 @@ function LoginPage() {
               e.preventDefault();
               onLogin();
             }}>
-            <h1 className="text-white mt-7 ml-6 text-3xl">
+            <h1 className={styles.heading}>
               {isloading ? "Processing" : "Login"}
             </h1>
             <div className={styles.formE}>

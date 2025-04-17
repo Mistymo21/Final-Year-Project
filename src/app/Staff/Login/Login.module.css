@@ -34,6 +34,10 @@
   overflow-y: auto; /* Enables scrolling if needed */
 }
 
+.heading{
+  color: white;
+}
+
 /* Form inputs */
 .formE {
   display: grid;

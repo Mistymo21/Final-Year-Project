@@ -19,6 +19,7 @@
     padding: 10px;
     display: flex;
     gap: 10px;
+    
 
 }
 
@@ -27,6 +28,7 @@
 }
 .buttons button{
     border: 1px solid white;
+    background-color: rgb(232, 225, 213);
     padding: 20px;
     width: 20vw;
     display: flex;

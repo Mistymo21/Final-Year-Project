@@ -16,7 +16,6 @@ const StaffTable= async () => {
               <th>Unit</th>
               <th>Department</th>
               <th>Faculty</th>
-              <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -25,11 +24,11 @@ const StaffTable= async () => {
               <tr key={staff.staff_id}>
               <td>{`${staff.firstName} ${staff.lastName}`}</td>
               <td>{staff.staff_id}</td>
-              <td></td>
+              <td>{staff.unit}</td>
               <td>Computer Science</td>
-              <td>20.24.24</td>
+              <td>{staff.faculty}</td>
               <td>
-                <Link href={`/staff/test`} className={styles.btn}>
+                <Link href={`/Student/StudentPage/SingleStaff${staff.id}`} className={styles.btn}>
                   <button >View</button>
                 </Link>
               </td>
