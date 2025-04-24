@@ -32,6 +32,10 @@
   border-radius: 8px;
 }
 
+.heading{
+  color: white;
+}
+
 .formE {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -1,51 +1,37 @@
-import connect from "@/database/db";
-import { NextResponse } from "next/server";
-import ClearanceSubmission from "@/models/ClearanceSubmission";
 
-export async function POST(request) {
+import { ClearanceSubmission } from '@/lib/models';
+import { NextRequest, NextResponse } from 'next/server';
+import connect from '@/database/db';
+import { UploadImage } from '../../../../lib/upload-images';
+
+
+export async function POST( request) {
   await connect();
 
+  const formData = await request.formData();
+
   try {
-    const reqBody = await request.json();
-    const { imageUrl, student_id, staffType } = reqBody;
+    const image = formData.get("image") 
 
-    if (!imageUrl || !student_id || !staffType) {
-      return NextResponse.json(
-        { message: "All fields are required" },
-        { status: 400 }
-      );
+   if (!image) {
+      return NextResponse.json({ message: "No image provided" }, { status: 400 });
     }
+  const uploadResult = await UploadImage(image, "image-upload");
 
-    //Prevent duplicate submission
-    const alreadySubmitted = await ClearanceSubmission.findOne({
-      student: student_id,
-      staffType,
-    });
+  console.log("Image: ", uploadResult);
+   await ClearanceSubmission.create({
+    imageUrl: uploadResult.secure_url, 
+    public_id: uploadResult.public_id,
+  });
+  
 
-    if (alreadySubmitted) {
-      return NextResponse.json(
-        { message: `Already submitted for ${staffType}` },
-        { status: 409 }
-      );
-    }
+   return NextResponse.json({ message: "Image uploaded successfully" }, { status: 200 });
 
-    // Create new submission
-    const submission = await ClearanceSubmission.create({
-      student: student_id,
-      staffType,
-      imageUrl,
-      status: "pending",
-    });
+  
 
-    return NextResponse.json(
-      { message: "Submission successful", submission },
-      { status: 201 }
-    );
   } catch (error) {
-    console.error("Submission error:", error);
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
+    console.log(error);
+    return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
+    
   }
 }

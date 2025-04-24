@@ -49,7 +49,7 @@ function Loginpage() {
         <div className="Loginwrapper">
           <div className="log-mtx">
             <form action="#" className="slogin-form">
-              <h1 className="text-white mt-7 ml-6 text-3xl">
+              <h1 className="heading">
                 {isloading ? "Processing" : "Login"}
               </h1>
               <div className="login-formD">

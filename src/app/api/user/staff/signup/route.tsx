@@ -10,7 +10,7 @@ connect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { firstname, lastname, email, password, unit, staff_id, faculty, department } = reqBody;
+    const { firstname, lastname, email, password, unit, staff_id, faculty } = reqBody;
 
     // Validate user input
     if (!validateInput(reqBody)) {
@@ -42,7 +42,6 @@ export async function POST(request: NextRequest) {
       unit,
       staff_id,
       faculty, 
-      department
     });
 
     // Save new user
@@ -61,7 +60,7 @@ export async function POST(request: NextRequest) {
 }
 
 function validateInput(reqBody) {
-  const requiredFields = ["firstname", "lastname", "email", "password", "unit", "staff_id", "faculty", "department"];
+  const requiredFields = ["firstname", "lastname", "email", "password", "unit", "staff_id", "faculty", "confirm_password"];
   return requiredFields.every((field) => reqBody[field] !== undefined && reqBody[field] !== null && reqBody[field] !== "");
 }
 

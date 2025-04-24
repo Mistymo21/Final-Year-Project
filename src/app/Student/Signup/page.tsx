@@ -32,6 +32,7 @@ function SignupPage() {
       setLoading(true);
       const response = await axios.post("/api/user/student/signup", user);
       console.log("Signup successful", response.data);
+      
       router.push("Login");
     } catch (error) {
       if (error.response) {
@@ -78,7 +79,7 @@ function SignupPage() {
         <div className={styles.wrap}>
           <div className={styles.mt}>
             <form action="#" className={styles.form} onSubmit={onSignupStud}>
-              <h1 className="text-white mt-7 ml-6 text-3xl">
+              <h1 className={styles.heading}>
                 {loading ? "Processing..." : " Signup"}
               </h1>
               {error && <p style={{ color: "red" }}>{error}</p>}

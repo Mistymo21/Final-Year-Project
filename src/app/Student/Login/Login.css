@@ -27,6 +27,10 @@
   border-radius: 8px;
 
 }
+.heading {
+  color: white;
+}
+
 
 /* Form inputs */
 .login-formD {

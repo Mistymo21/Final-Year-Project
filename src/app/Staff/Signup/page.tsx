@@ -16,7 +16,6 @@ function SignupPage() {
     staff_id: "",
     unit: "",
     faculty: "",
-    department: "api",
   });
 
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
@@ -54,8 +53,9 @@ function SignupPage() {
       user.email.length > 0 &&
       user.confirm_password.length > 0 &&
       user.password.length > 0 &&
-      user.faculty.length > 0 &&
-      user.department.length > 0
+      user.staff_id.length > 0 &&
+      user.unit.length > 0 &&
+      user.faculty.length > 0 
     ) {
       setButtonDisabled(false);
     } else {
@@ -160,19 +160,7 @@ function SignupPage() {
                   </option>
                 </select>
 
-                <label htmlFor="faculty">Department</label>
-                <select
-                  name="dept"
-                  id="dept"
-                  value={user.department}
-                  onChange={(e) =>
-                    setUser({ ...user, department: e.target.value })
-                  }>
-                  <option value="hidden">Choose Department</option>
-                  <option value="computer">Computer Science</option>
-                  <option value="software">Software</option>
-                  <option value="cyber">Cyber Security</option>
-                </select>
+  
 
                 <label htmlFor="password">Password</label>
                 <input
