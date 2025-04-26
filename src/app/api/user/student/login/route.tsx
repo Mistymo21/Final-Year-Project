@@ -53,6 +53,8 @@ export async function POST(request: NextRequest) {
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
+
+    console.log(token);
     const response = NextResponse.json(
       { message: "Login Successful", token, success: true },
       { status: 200 }

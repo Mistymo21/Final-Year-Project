@@ -1,8 +1,10 @@
 
-import { ClearanceSubmission } from '@/lib/models';
+import { ClearanceSubmission, Student } from '@/lib/models';
 import { NextRequest, NextResponse } from 'next/server';
 import connect from '@/database/db';
 import { UploadImage } from '../../../../lib/upload-images';
+import jwt from 'jsonwebtoken';
+
 
 
 export async function POST( request) {
@@ -35,3 +37,5 @@ export async function POST( request) {
     
   }
 }
+
+

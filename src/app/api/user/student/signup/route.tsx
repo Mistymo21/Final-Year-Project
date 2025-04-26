@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     // Create JWT token
     const token = jwt.sign({ id: savedNewUser._id }, process.env.JWT_SECRET_KEY!, { expiresIn: '1d' });
-
+    console.log('Token:', token); // Log the token for debugging
     // Return response with token and user details
     return NextResponse.json(
       {
@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
           firstName: savedNewUser.firstName,
           lastName: savedNewUser.lastName,
           email: savedNewUser.email,
+          matric_no: savedNewUser.matric_no,
         },
         token, // Send the token in the response
       },

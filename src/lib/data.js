@@ -1,8 +1,8 @@
 import connect from "@/database/db";
 import { Staff, Student } from "@/lib/models";
 
-export const fetchStudentsData = async (q) => {
-  const regex = new RegExp(q || "", "i");
+export const fetchStudentsData = async () => {
+  const regex = new RegExp();
 
   try {
     await connect();
