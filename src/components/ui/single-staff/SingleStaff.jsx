@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SingleStaff.module.css";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -8,10 +8,11 @@ import { usePathname } from "next/navigation";
 const StaffSinglePage = () => {
   const pathname = usePathname();
   const staffId = pathname.split("SingleStaff")[1];
-  const [staff, setStaff] = React.useState(null);
-  const [student, setStudent] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
-  const [image, setImage] = React.useState(null);
+  const [staff, setStaff] = useState(null);
+  const [student, setStudent] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState([]); // Store an array of selected images
+  const [imagePreviews, setImagePreviews] = useState([]); // Store image preview URLs
 
   useEffect(() => {
     const fetchStaff = async () => {
@@ -29,50 +30,58 @@ const StaffSinglePage = () => {
     fetchStaff();
   }, [staffId]);
 
-            
-
-
-useEffect(() => {
-  const fetchStudent = async () =>{
-    setLoading(true);
-   try {
-    const response = await axios.get(`api/getAllStudents${matricNo}`)
-    setStudent(response.data);
-    console.log(response.data);
-    
-   } catch (error) {
-    console.log(error)
-    toast.error("An Error occured", error)
-    
-   }finally{
-    setLoading(false);
-   }
-  }
-  fetchStudent()
-}, [])
-      
-
-
-
+  // Fetch student data from localStorage and update state
+  useEffect(() => {
+    const storedStudent = JSON.parse(localStorage.getItem("student"));
+    if (storedStudent) {
+      setStudent(storedStudent); // Set the student data from localStorage
+    }
+  }, []);
 
   const handleImageChange = (e) => {
     if (e.target.files) {
-      setImage(e.target.files[0]);
+      const selectedFiles = Array.from(e.target.files); // Convert FileList to array
+      setImages((prevImages) => [...prevImages, ...selectedFiles]); // Add selected images to the array
+
+      // Generate preview URLs for selected images
+      const newPreviews = selectedFiles.map((file) => URL.createObjectURL(file));
+      setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]); // Add preview URLs to the array
     }
+  };
+
+  const handleImageDelete = (index) => {
+    // Remove selected image at the given index
+    const updatedImages = [...images];
+    const updatedPreviews = [...imagePreviews];
+    updatedImages.splice(index, 1);
+    updatedPreviews.splice(index, 1);
+
+    setImages(updatedImages);
+    setImagePreviews(updatedPreviews);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!image) {
+    if (images.length === 0) {
       alert("Please upload all required images.");
       setLoading(false);
       return;
     }
 
     const formData = new FormData();
-    formData.append("image", image);
+    // Append student info to FormData
+    formData.append("student_name", `${student?.firstName} ${student?.lastName}`);
+    formData.append("matric_no", student?.matricNumber);
+    formData.append("department", student?.department);
+    formData.append("faculty", student?.faculty);
+    formData.append("level", "400");  // Adjust level if needed, as it's static here
+
+    // Append images to FormData
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
 
     try {
       const response = await axios.post("/api/clearance/student", formData, {
@@ -93,7 +102,7 @@ useEffect(() => {
 
   return (
     <>
-      {staff  ? (
+      {staff ? (
         <div className={styles.container}>
           <h1 className={styles.heading}>Staff Details</h1>
 
@@ -135,26 +144,44 @@ useEffect(() => {
               <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.inputs}>
                   <label>Name: </label>
-                  <input value="Yusuf Muhammed" disabled />
+                  <input value={student?.firstName + " " + student?.lastName} disabled />
 
                   <label>Matric No:</label>
-                  <input value={student?.matric_no} disabled />
+                  <input value={student?.matricNumber} disabled />
 
                   <label>Department:</label>
-                  <input value="Computer Science" disabled />
+                  <input value={student?.department} disabled />
 
                   <label>Faculty:</label>
-                  <input value="Computing, Engineering & Technology" disabled />
+                  <input value={student?.faculty} disabled />
 
                   <label>Level: </label>
                   <input value="400" disabled />
 
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageChange}
-                  />
+                  {/* File Input */}
+                  <div className={styles.fileInputWrapper}>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      multiple
+                      name = "images"
+                    />
+                    <div className={styles.imagePreviews}>
+                      {imagePreviews.map((preview, index) => (
+                        <div key={index} className={styles.imagePreview}>
+                          <img src={preview} alt={`Preview ${index + 1}`} />
+                          <button
+                            type="button"
+                            onClick={() => handleImageDelete(index)}
+                            className={styles.deleteButton}
+                          >
+                            Delete Image
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
                 <button disabled={loading}>Upload All</button>
               </form>

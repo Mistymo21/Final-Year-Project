@@ -21,7 +21,10 @@ function Loginpage() {
       const response = await axios.post("/api/user/student/login", user);
       console.log("API Response:", response); // Debug response
       if (response.status === 200) {
+        localStorage.setItem("student", JSON.stringify(response.data.student));
+        console.log("Student data:", response.data.student); // Debug student data
         localStorage.setItem("token", response.data.token);
+        console.log("Token:", response.data.token); // Debug token
         console.log("Redirecting to Student Page");
         router.push("StudentPage");
       } else {

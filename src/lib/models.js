@@ -92,18 +92,37 @@ const StaffSchema = new mongoose.Schema(
 
 
 const ClearanceSubmissionSchema = new mongoose.Schema({
-  student: { type: mongoose.Schema.Types.ObjectId, ref: "Student", required: true },
+  studentName: {
+    type: String,
+    required: true,
+  },
+  matricNo: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  department: {
+    type: String,
+    required: true,
+  },
+  faculty: {
+    type: String,
+    required: true,
+  },
+  level: {
+    type: String,
+    required: true,
+  },
 
-  // Snapshot of student's info at submission time
-  name: { type: String, required: true },
-  matricNumber: { type: String, required: true },
-  faculty: { type: String },
-  department: { type: String },
-  level: { type: String },
-  unit: { type: String },
-
-  imageUrl: { type: String, required: true },
-  public_id: { type: String, required: true },
+  // Multiple images information
+  imageUrls: {
+    type: [String], // Array of image URLs
+    required: true,
+  },
+  public_ids: {
+    type: [String], // Array of public IDs
+    required: true,
+  },
 
   status: {
     type: String,
@@ -111,10 +130,12 @@ const ClearanceSubmissionSchema = new mongoose.Schema({
     default: "pending",
   },
 
-  comment: { type: String },
-  submittedAt: { type: Date, default: Date.now },
-});
+  comment: {
+    type: String,
+  },
+}, {timestamps: true});
 
+// Create the model from the schema
 export const ClearanceSubmission =
   mongoose.models.ClearanceSubmission ||
   mongoose.model("ClearanceSubmission", ClearanceSubmissionSchema);

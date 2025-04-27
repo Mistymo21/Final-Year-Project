@@ -51,3 +51,23 @@
    
     
 }
+
+.imagePreview {
+    margin-top: 10px;
+    /* display: flex; */
+  }
+  
+  .imagePreview img {
+    max-width: 150px;
+    max-height: 150px;
+  }
+  
+  .deleteButton {
+    margin-top: 5px;
+    padding: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  

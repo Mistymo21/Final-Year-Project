@@ -1,76 +1,69 @@
-import  connect  from "@/database/db";
+import connect from "@/database/db"; 
 import { NextRequest, NextResponse } from "next/server";
-import {Student} from "@/lib/models";
+import { Student } from "@/lib/models";
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 connect();
+
 export async function POST(request: NextRequest) {
   try {
-    //Fetch User req from the body
     const reqBody = await request.json();
-    const { matric_no, password } = reqBody;
-    console.log(reqBody)
+    const { matric_no, password } = reqBody;  // Expecting matric_no and password only
+    console.log(reqBody);
 
-    //Check if all field are filled
+    // Check if matric_no and password are provided
     if (!matric_no || !password) {
-      return NextResponse.json(
-        { message: "Please fill the fields" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Please fill the fields" }, { status: 400 });
     }
 
-  
-
-    //check if user exists
-
+    // Fetch student using matric_no
     const user = await Student.findOne({ matric_no });
 
     if (!user) {
-      return NextResponse.json(
-        { messaage: "User not found!!!" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: "User not found!!!" }, { status: 401 });
     }
 
-    // Validate Password
+    // Validate the password
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
-      return NextResponse.json(
-        { message: "Invalid Password" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: "Invalid Password" }, { status: 401 });
     }
 
-    // Create a jwt token
-    const tokenData = {
-      id: user.matric_no,
-    };
+    // Create a JWT token
+    const tokenData = { id: user.matric_no };
 
-    //Creating A token
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
 
-    console.log(token);
+    // Return student info (including full details) along with the token
     const response = NextResponse.json(
-      { message: "Login Successful", token, success: true },
+      { 
+        message: "Login Successful", 
+        token, 
+        success: true,
+        student: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          matricNumber: user.matric_no,
+          department: user.department,
+          faculty: user.faculty,
+          email: user.email,  // Optional: you can include email as well
+        }
+      },
       { status: 200 }
     );
-    response.cookies.set("token", token, { httpOnly: true });
-    return response;
-
     
+ 
+    // Set the token in a secure cookie
+    response.cookies.set("token", token, { httpOnly: true });
+
+    return response;
   } catch (error) {
-    console.log("Try Again", error);
-    return NextResponse.json(
-      {
-        message: "Internal Server Error",
-      },
-      { status: 500 }
-    );
+    console.log("Error:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
-  
 }
