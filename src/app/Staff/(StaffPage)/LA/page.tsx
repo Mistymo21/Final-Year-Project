@@ -7,7 +7,7 @@ import React from "react";
 const LA = async () => {
   
   return (
-    <StudentTable searchParams={URLSearchParams}/>
+    <StudentTable />
   );
 };
 

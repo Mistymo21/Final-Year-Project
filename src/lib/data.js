@@ -1,5 +1,6 @@
 import connect from "@/database/db";
-import { Staff, Student } from "@/lib/models";
+import { Staff, Student,  ClearanceSubmission } from "@/lib/models";
+
 
 export const fetchStudentsData = async () => {
   const regex = new RegExp();
@@ -29,5 +30,21 @@ export const fetchStaffData = async (q) => {
   } catch (error) {
     console.log(error);
     throw new Error("Failed to fetch staff data");
+  }
+};
+
+
+
+export const getClearanceSubmissions = async () => {
+  await connect();
+  try {
+    const data = await  ClearanceSubmission.find({});
+    return data;
+    
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch clearance submissions");
+
+    
   }
 };

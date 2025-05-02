@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./studentTable.module.css";
 import Link from "next/link";
-import { fetchStudentsData } from "@/lib/data";
+import { getClearanceSubmissions } from "@/lib/data";
 const StudentTable = async () => {
-  const students = await fetchStudentsData()
+  const students = await getClearanceSubmissions()
   return (
     <div className={styles.container}>
       <h1>Dashboard</h1>
@@ -35,9 +35,9 @@ const StudentTable = async () => {
           </thead>
           <tbody>
               {students.map((student) => (
-                <tr key={student.matric_no}>
-              <td>{`${student.firstName} ${student.lastName}`}</td>
-              <td>{student.matric_no}</td>
+                <tr key={student.matricNo}>
+              <td>{student.studentName}</td>
+              <td>{student.matricNo}</td>
               <td>{student.department}</td>
               <td>{student.faculty}</td>
               <td>20.24.24</td>

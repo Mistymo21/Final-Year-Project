@@ -92,6 +92,7 @@ const StaffSchema = new mongoose.Schema(
 
 
 const ClearanceSubmissionSchema = new mongoose.Schema({
+
   studentName: {
     type: String,
     required: true,
@@ -113,27 +114,27 @@ const ClearanceSubmissionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
-  // Multiple images information
   imageUrls: {
-    type: [String], // Array of image URLs
+    type: [String],
     required: true,
   },
   public_ids: {
-    type: [String], // Array of public IDs
+    type: [String],
     required: true,
   },
-
   status: {
     type: String,
     enum: ["pending", "approved", "rejected"],
     default: "pending",
   },
-
   comment: {
     type: String,
   },
-}, {timestamps: true});
+  reviewedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Staff", // Reference to your Staff model
+  },
+}, { timestamps: true });
 
 // Create the model from the schema
 export const ClearanceSubmission =
