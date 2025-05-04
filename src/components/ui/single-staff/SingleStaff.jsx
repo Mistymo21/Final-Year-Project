@@ -8,49 +8,73 @@ import { usePathname } from "next/navigation";
 const StaffSinglePage = () => {
   const pathname = usePathname();
   const staffId = pathname.split("SingleStaff")[1];
+
   const [staff, setStaff] = useState(null);
   const [student, setStudent] = useState(null);
+  const [clearanceData, setClearanceData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [images, setImages] = useState([]); // Store an array of selected images
-  const [imagePreviews, setImagePreviews] = useState([]); // Store image preview URLs
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
+  // Fetch staff details
   useEffect(() => {
     const fetchStaff = async () => {
-      setLoading(true); // Set loading state while fetching data
+      setLoading(true);
       try {
         const response = await axios.get(`/api/clearance/staff/${staffId}`);
-        setStaff(response.data); // Assuming response contains the staff data directly
+        setStaff(response.data);
       } catch (error) {
         console.log(error);
         toast.error("There was an error while fetching staff.");
       } finally {
-        setLoading(false); // Reset loading state once the data is fetched
+        setLoading(false);
       }
     };
     fetchStaff();
   }, [staffId]);
 
-  // Fetch student data from localStorage and update state
+  // Fetch student details from local storage
   useEffect(() => {
     const storedStudent = JSON.parse(localStorage.getItem("student"));
     if (storedStudent) {
-      setStudent(storedStudent); // Set the student data from localStorage
+      setStudent(storedStudent);
     }
   }, []);
 
+  // Fetch clearance data using matric number
+  useEffect(() => {
+    if (student) {
+      const fetchClearanceData = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `/api/clearance/student/getUpdate/${student.matricNumber}`
+          );
+          setClearanceData(response.data);
+        } catch (error) {
+          console.log(error);
+          toast.error("Error fetching clearance data.");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchClearanceData();
+    }
+  }, [student]);
+
   const handleImageChange = (e) => {
     if (e.target.files) {
-      const selectedFiles = Array.from(e.target.files); // Convert FileList to array
-      setImages((prevImages) => [...prevImages, ...selectedFiles]); // Add selected images to the array
+      const selectedFiles = Array.from(e.target.files);
+      setImages((prev) => [...prev, ...selectedFiles]);
 
-      // Generate preview URLs for selected images
-      const newPreviews = selectedFiles.map((file) => URL.createObjectURL(file));
-      setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]); // Add preview URLs to the array
+      const newPreviews = selectedFiles.map((file) =>
+        URL.createObjectURL(file)
+      );
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
     }
   };
 
   const handleImageDelete = (index) => {
-    // Remove selected image at the given index
     const updatedImages = [...images];
     const updatedPreviews = [...imagePreviews];
     updatedImages.splice(index, 1);
@@ -71,14 +95,15 @@ const StaffSinglePage = () => {
     }
 
     const formData = new FormData();
-    // Append student info to FormData
-    formData.append("student_name", `${student?.firstName} ${student?.lastName}`);
+    formData.append(
+      "student_name",
+      `${student?.firstName} ${student?.lastName}`
+    );
     formData.append("matric_no", student?.matricNumber);
     formData.append("department", student?.department);
     formData.append("faculty", student?.faculty);
-    formData.append("level", "400");  // Adjust level if needed, as it's static here
+    formData.append("level", "400");
 
-    // Append images to FormData
     images.forEach((image) => {
       formData.append("images", image);
     });
@@ -87,7 +112,7 @@ const StaffSinglePage = () => {
       const response = await axios.post("/api/clearance/student", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${localStorage.getItem('authToken')}`,
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
       toast.success("Submitted successfully");
@@ -97,6 +122,17 @@ const StaffSinglePage = () => {
       toast.error("There was an error while uploading.");
     } finally {
       setLoading(false);
+    }
+  };
+  const getStatusBackground = (status) => {
+    console.log("Status:", status); // Debugging the status value
+    switch (status?.toLowerCase()) {
+      case "accepted":
+        return styles.accepted;
+      case "rejected":
+        return styles.rejected;
+      default:
+        return styles.pending;
     }
   };
 
@@ -128,7 +164,7 @@ const StaffSinglePage = () => {
             <div className={styles.detail}>
               <span>Faculty:</span>
               <span>
-                <b>{staff.faculty}</b>
+                <b>{staff?.faculty}</b>
               </span>
             </div>
           </div>
@@ -139,12 +175,16 @@ const StaffSinglePage = () => {
             <div className={styles.details}>
               <h1>UPLOAD DOCUMENTS</h1>
               <p className={styles.uploadNote}>
-                Note: Please ensure that the names of the files you are uploading are exactly as required.
+                Note: Please ensure that the names of the files you are
+                uploading are exactly as required.
               </p>
               <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.inputs}>
                   <label>Name: </label>
-                  <input value={student?.firstName + " " + student?.lastName} disabled />
+                  <input
+                    value={student?.firstName + " " + student?.lastName}
+                    disabled
+                  />
 
                   <label>Matric No:</label>
                   <input value={student?.matricNumber} disabled />
@@ -158,14 +198,23 @@ const StaffSinglePage = () => {
                   <label>Level: </label>
                   <input value="400" disabled />
 
-                  {/* File Input */}
+                  <label>Status</label>
+                  <p
+                    className={`${styles.status} ${getStatusBackground(
+                      clearanceData?.status
+                    )}`}>
+                    {clearanceData?.status || "Pending"}
+                  </p>
+
+                  <label>Comment</label>
+                  <p>{clearanceData?.comment || "No comment yet."}</p>
                   <div className={styles.fileInputWrapper}>
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
                       multiple
-                      name = "images"
+                      name="images"
                     />
                     <div className={styles.imagePreviews}>
                       {imagePreviews.map((preview, index) => (
@@ -174,8 +223,7 @@ const StaffSinglePage = () => {
                           <button
                             type="button"
                             onClick={() => handleImageDelete(index)}
-                            className={styles.deleteButton}
-                          >
+                            className={styles.deleteButton}>
                             Delete Image
                           </button>
                         </div>
@@ -189,7 +237,7 @@ const StaffSinglePage = () => {
           </div>
         </div>
       ) : (
-        <h1>Loading</h1>
+        <h1>Loading...</h1>
       )}
     </>
   );

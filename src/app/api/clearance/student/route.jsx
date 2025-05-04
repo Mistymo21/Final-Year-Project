@@ -1,6 +1,6 @@
-import { ClearanceSubmission, Student } from '@/lib/models'; 
-import { NextRequest, NextResponse } from 'next/server'; 
-import connect from '@/database/db'; 
+import { ClearanceSubmission, Student } from '@/lib/models';
+import { NextRequest, NextResponse } from 'next/server';
+import connect from '@/database/db';
 import { UploadImage } from '../../../../lib/upload-images';
 
 export async function POST(request) {
@@ -21,8 +21,18 @@ export async function POST(request) {
       return NextResponse.json({ message: "All fields are required" }, { status: 400 });
     }
 
+    // Check if there's an existing submission for this matric number
+    const existingSubmission = await ClearanceSubmission.findOne({ matricNo });
+
+    if (existingSubmission && existingSubmission.status !== "rejected") {
+      return NextResponse.json(
+        { message: "You have already submitted. You can only re-upload if your previous submission was rejected." },
+        { status: 400 }
+      );
+    }
+
     // Handle multiple image uploads
-    const images = formData.getAll("images"); // Notice: getAll for multiple images
+    const images = formData.getAll("images");
     if (!images || images.length === 0) {
       return NextResponse.json({ message: "No images provided" }, { status: 400 });
     }
@@ -35,15 +45,32 @@ export async function POST(request) {
     const imageUrls = uploadResults.map((result) => result.secure_url);
     const public_ids = uploadResults.map((result) => result.public_id);
 
-    // Save the data into the database
+    if (existingSubmission && existingSubmission.status === "rejected") {
+      // Update the rejected record
+      await ClearanceSubmission.findByIdAndUpdate(existingSubmission._id, {
+        studentName,
+        department,
+        faculty,
+        level,
+        imageUrls,
+        public_ids,
+        status: "pending", // Reset to pending
+        comment: "",       // Clear the rejection comment
+      });
+
+      return NextResponse.json({ message: "Re-submission after rejection successful" }, { status: 200 });
+    }
+
+    // Save a new submission
     await ClearanceSubmission.create({
       studentName,
       matricNo,
       department,
       faculty,
       level,
-      imageUrls, // Save array of URLs
-      public_ids, // Save array of public IDs
+      imageUrls,
+      public_ids,
+      status: "pending",
     });
 
     return NextResponse.json({ message: "Images and student data uploaded successfully" }, { status: 200 });

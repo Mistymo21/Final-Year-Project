@@ -70,4 +70,23 @@
     border: none;
     cursor: pointer;
   }
-  
+/* Status Background Colors */
+.status {
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.accepted {
+  background-color: #28a745; /* Green */
+}
+
+.rejected {
+  background-color: #dc3545; /* Red */
+}
+
+.pending {
+  background-color: #ffc107; /* Yellow */
+}

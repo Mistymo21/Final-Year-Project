@@ -1,6 +1,5 @@
 "use client";
 import "./globals.css";
-import  Notification  from "@/components/ui/notification/notification";
 
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -9,7 +8,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
 
       <div>{children}</div>
-      <Notification/>
      
       </body>
     </html>

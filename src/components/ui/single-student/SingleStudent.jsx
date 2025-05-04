@@ -14,6 +14,12 @@ const SingleUserPage = () => {
   const [student, setStudent] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  // For managing modal states
+  const [isAcceptModalOpen, setIsAcceptModalOpen] = useState(false);
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const [signature, setSignature] = useState(null);
+  const [rejectionComment, setRejectionComment] = useState("");
+
   useEffect(() => {
     const fetchStudent = async () => {
       setLoading(true);
@@ -34,16 +40,55 @@ const SingleUserPage = () => {
   }, []);
 
   const handleAccept = () => {
-    alert("Student accepted");
-  }
-
+    // Open the modal for signature upload when the "Accept" button is clicked
+    setIsAcceptModalOpen(true);
+  };
 
   const handleReject = () => {
-    alert("Student rejected");
-  }
+    // Open the modal for rejection comment input when the "Reject" button is clicked
+    setIsRejectModalOpen(true);
+  };
 
+  const handleSignatureUpload = async () => {
+    if (!signature) {
+      toast.error("Please upload a signature.");
+      return;
+    }
 
-  
+    try {
+      // Update the student status and upload signature via your API (this is a mock API call)
+      const response = await axios.post("/api/clearance/student/approve", {
+        studentId,
+        signature,
+      });
+      toast.success("Student accepted!");
+      setIsAcceptModalOpen(false); // Close the modal after submission
+    } catch (error) {
+      console.error("Error uploading signature", error);
+      toast.error("Error processing the acceptance.");
+    }
+  };
+
+  const handleRejection = async () => {
+    if (!rejectionComment) {
+      toast.error("Please provide a reason for rejection.");
+      return;
+    }
+
+    try {
+     
+      const response = await axios.patch(`/api/clearance/staff/reject/${studentId}`, {
+        studentId,
+        comment: rejectionComment,
+      });
+      toast.success("Student rejected!");
+      setIsRejectModalOpen(false); // Close the modal after submission
+    } catch (error) {
+      console.error("Error rejecting student", error);
+      toast.error("Error processing the rejection.");
+    }
+  };
+
   return (
     <>
       {loading ? (
@@ -85,12 +130,55 @@ const SingleUserPage = () => {
             </div>
 
             <div className={styles.btns}>
-              <button className={styles.reject} onClick={handleReject}>Reject</button>
-              <button className={styles.accept} onClick={handleAccept}>Accept</button>
+              <button className={styles.reject} onClick={handleReject}>
+                Reject
+              </button>
+              <button className={styles.accept} onClick={handleAccept}>
+                Accept
+              </button>
             </div>
           </div>
 
-          {/* Modal Preview */}
+          {/* Accept Modal */}
+          {isAcceptModalOpen && (
+            <div className={styles.modal}>
+              <div className={styles.modalContent}>
+                <h2>Upload Signature</h2>
+                <input
+                  type="file"
+                  onChange={(e) => setSignature(e.target.files[0])}
+                />
+                <div className={styles.modalButtons}>
+                  <button onClick={handleSignatureUpload}>Submit</button>
+                  <button onClick={() => setIsAcceptModalOpen(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Reject Modal */}
+          {isRejectModalOpen && (
+            <div className={styles.modal}>
+              <div className={styles.modalContent}>
+                <h2>Provide Rejection Comment</h2>
+                <textarea
+                  value={rejectionComment}
+                  onChange={(e) => setRejectionComment(e.target.value)}
+                  placeholder="Reason for rejection..."
+                />
+                <div className={styles.modalButtons}>
+                  <button onClick={handleRejection}>Submit</button>
+                  <button onClick={() => setIsRejectModalOpen(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Image Preview Modal */}
           {selectedImage && (
             <div className={styles.modal} onClick={() => setSelectedImage(null)}>
               <Image

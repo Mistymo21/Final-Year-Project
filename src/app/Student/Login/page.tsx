@@ -4,6 +4,7 @@ import "./Login.css";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 function Loginpage() {
   const router = useRouter();
@@ -28,7 +29,7 @@ function Loginpage() {
         console.log("Redirecting to Student Page");
         router.push("StudentPage");
       } else {
-        alert("Invalid credentials");
+        toast.error("Invalid credentials");
       }
     } catch (error) {
       console.log("Something went wrong", error);
