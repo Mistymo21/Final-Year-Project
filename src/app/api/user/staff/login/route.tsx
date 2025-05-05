@@ -45,6 +45,7 @@ export async function POST(request) {
     const tokenData = {
       id: user.staff_id,
       unit: user.unit, 
+      
     };
 
     // Creating a token 
@@ -52,7 +53,18 @@ export async function POST(request) {
       expiresIn: "1h",
     });
     const response = NextResponse.json(
-      { message: "Login Successful", token, success: true },
+      {
+        message: "Login Successful",
+        token,
+        success: true,
+        staff: {
+          staff_id: user.staff_id,
+          unit: user.unit,
+          firstName: user.firstName, 
+          lastName: user.lastName,
+          _id: user._id,
+        },
+      },
       { status: 200 }
     );
     response.cookies.set("token", token, {httpOnly: true});

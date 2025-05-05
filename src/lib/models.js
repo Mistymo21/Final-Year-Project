@@ -134,8 +134,7 @@ const ClearanceSubmissionSchema = new mongoose.Schema({
     type: String,
   },
   reviewedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Staff", // Reference to your Staff model
+    type: "String",
   },
 }, { timestamps: true });
 

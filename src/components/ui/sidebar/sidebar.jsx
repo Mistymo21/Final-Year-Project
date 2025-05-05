@@ -23,12 +23,12 @@ const menuItems = [
     list: [
       {
         title: "Dashboard",
-        path: "/dashboard",
+        path: "/Staff/LA",
         icon: <MdDashboard />,
       },
       {
         title: "Users",
-        path: "/dashboard/users",
+        path:"Student/",
         icon: <MdSupervisedUserCircle />,
       },
      
@@ -39,7 +39,7 @@ const menuItems = [
     list: [
       {
         title: "Settings",
-        path: "/dashboard/settings",
+        path: "Staff/settings",
         icon: <MdOutlineSettings />,
       },
       {

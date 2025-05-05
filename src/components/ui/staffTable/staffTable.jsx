@@ -7,6 +7,9 @@ const StaffTable= async () => {
   return (
     <div className={styles.container}>
       <h1>Dashboard</h1>
+      <div  className={styles.right}>
+        <Link href=''>Print Clearance</Link>
+      </div>
       <div className={styles.tableContainer}>
         <table>
           <thead>

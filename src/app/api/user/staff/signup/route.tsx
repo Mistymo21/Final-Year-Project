@@ -1,14 +1,14 @@
 import  connect  from "@/database/db";
 import {Staff} from "@/lib/models";
-
+import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 
-connect();
 
 export async function POST(request: NextRequest) {
   try {
+    await connect();
     const reqBody = await request.json();
     const { firstname, lastname, email, password, unit, staff_id, faculty } = reqBody;
 
@@ -46,12 +46,27 @@ export async function POST(request: NextRequest) {
 
     // Save new user
     const savedNewUser = await newlyCreatedUser.save();
-    
-    
-    console.log(savedNewUser);
-    
-    return NextResponse.json({ message: "User created successfully", success: true, savedNewUser }, { status: 201 });
 
+    const token = jwt.sign({id: savedNewUser._id}, process.env.JWT_SECRET_KEY!, { expiresIn: "1d" });
+    console.log(token)
+
+    
+   return NextResponse.json(
+         {
+           message: 'User created successfully',
+           success: true,
+           user: {
+             _id: savedNewUser._id,
+             firstName: savedNewUser.firstName,
+             lastName: savedNewUser.lastName,
+             unit: savedNewUser.unit,
+             email: savedNewUser.email,
+             staff_id: savedNewUser.staff_id,
+           },
+           token, // Send the token in the response
+         },
+         { status: 201 }
+       );
   } catch (error) {
     console.error(error);
     

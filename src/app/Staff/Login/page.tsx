@@ -21,10 +21,14 @@ function LoginPage() {
   const onLogin = async () => {
     try {
       setIsloading(true);
-      console.log("Sending user data:", user);
       const response = await axios.post("/api/user/staff/login", user);
+      console.log(response.data)
+
       if (response.status === 200) {
+        localStorage.setItem("staff", JSON.stringify(response.data.staff));
+        console.log("Staff Data: ", (response.data.staff))
         localStorage.setItem("token", response.data.token);
+
         console.log("Redirecting to Staff Page");
         setIsLoggedIn(true);
         switch (user.unit.trim().toLowerCase()) {

@@ -13,12 +13,18 @@ const SingleUserPage = () => {
   const studentId = pathname.split("SingleStudent")[1];
   const [student, setStudent] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-
-  // For managing modal states
+  const [staff, setStaff] = useState(null);
   const [isAcceptModalOpen, setIsAcceptModalOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [signature, setSignature] = useState(null);
   const [rejectionComment, setRejectionComment] = useState("");
+
+  useEffect(() => {
+    const storedStaff = JSON.parse(localStorage.getItem("staff"));
+    if (storedStaff) {
+      setStaff(storedStaff);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchStudent = async () => {
@@ -37,37 +43,46 @@ const SingleUserPage = () => {
     };
 
     fetchStudent();
-  }, []);
+  }, [studentId]);
 
   const handleAccept = () => {
-    // Open the modal for signature upload when the "Accept" button is clicked
     setIsAcceptModalOpen(true);
   };
 
   const handleReject = () => {
-    // Open the modal for rejection comment input when the "Reject" button is clicked
     setIsRejectModalOpen(true);
   };
 
-  const handleSignatureUpload = async () => {
-    if (!signature) {
-      toast.error("Please upload a signature.");
-      return;
-    }
+  // Handle the approval request (with signature and comment)
+ const handleSignatureUpload = async () => {
+  if (!signature) {
+    alert("Please upload a signature.");
+    return;
+  }
 
-    try {
-      // Update the student status and upload signature via your API (this is a mock API call)
-      const response = await axios.post("/api/clearance/student/approve", {
-        studentId,
-        signature,
-      });
-      toast.success("Student accepted!");
-      setIsAcceptModalOpen(false); // Close the modal after submission
-    } catch (error) {
-      console.error("Error uploading signature", error);
-      toast.error("Error processing the acceptance.");
-    }
-  };
+  try {
+    const formData = new FormData();
+    formData.append("signature", signature);
+    formData.append("reviewedBy", `${staff?.firstName} ${staff?.lastName}` || "Unknown Staff");
+
+    const response = await axios.patch(
+      `/api/clearance/staff/approve/${studentId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    toast.success("Student approved!");
+    setIsAcceptModalOpen(false);
+  } catch (error) {
+    console.error("Error approving student", error);
+    toast.error("Error processing the approval.");
+  }
+};
+
 
   const handleRejection = async () => {
     if (!rejectionComment) {
@@ -76,11 +91,11 @@ const SingleUserPage = () => {
     }
 
     try {
-     
       const response = await axios.patch(`/api/clearance/staff/reject/${studentId}`, {
         studentId,
         comment: rejectionComment,
       });
+
       toast.success("Student rejected!");
       setIsRejectModalOpen(false); // Close the modal after submission
     } catch (error) {
