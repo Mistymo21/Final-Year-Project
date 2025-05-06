@@ -3,13 +3,68 @@
 }
 
 
-.menu{
-    flex: 1;
-    background: rgba(0, 0, 0, 0.727);
-    padding: 20px;
-}
+
 
 .contact{
     flex: 4;
     padding: 20px;
 }
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100vh;
+    position: relative; /* For positioning the hamburger */
+  
+  }
+  
+  .menu {
+    width: 250px;
+    background-color: #1e293b;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .hamburger {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .wrapper {
+      flex-direction: column;
+    }
+  
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      height: 100vh;
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
+  
+    .showMenu {
+      left: 0;
+    }
+  
+    .hamburger {
+      display: block;
+      position: fixed;
+      top: 1px;
+      left: 1px;
+      z-index: 1100;
+      background: none;
+      border: none;
+      color: black;
+      font-size: 28px;
+      cursor: pointer;
+    }
+  
+    .content {
+      padding-top: 60px; /* Leave space for hamburger */
+    }
+  }
+  

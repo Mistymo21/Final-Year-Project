@@ -72,12 +72,7 @@ function Loginpage() {
                   }
                 />
               </div>
-              <div className="Btns">
-                <div className="remBtn ml-4">
-                  <input type="checkbox" />
-                  <span>Remember Me</span>
-                </div>
-              </div>
+             
 
               <div className="btnWrap">
                 <button

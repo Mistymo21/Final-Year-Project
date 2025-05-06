@@ -1,45 +1,62 @@
-
-.container{
-    background: url('../Assets/bg-2.jpg');
-    background-repeat: no-repeat;
+.container {
+    background: url('../Assets/bg-2.jpg') no-repeat center center;
     background-size: cover;
-    background-repeat: no-repeat;
     height: 100vh;
     width: 100%;
     display: flex;
     align-items: center;
-}
-
-.buttons{
-    color:  white;
+    justify-content: center;
+  }
+  
+  .buttons {
+    color: white;
     font-size: 40px;
     text-align: center;
-    margin: 0 auto 0;
-    height: 30%;
     display: flex;
-    padding: 10px;
-    display: flex;
-    gap: 10px;
-    
-
-}
-
-.buttons button{
+    gap: 20px;
+    padding: 20px;
+    animation: fadeSlideIn 0.8s ease-in-out forwards;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  
+  @keyframes fadeSlideIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .buttons button {
     border: 1px solid white;
     background-color: rgb(232, 225, 213);
-    padding: 60px ;
+    padding: 60px 20px;
     width: 20vw;
-    display: flex;
-    flex-direction: column;
     font-size: 24px;
     cursor: pointer;
+    display: flex;
     justify-content: center;
     align-items: center;
-}
-
-
-.buttons button:hover{
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+  }
+  
+  .buttons button:hover {
     background-color: grey;
-    
-
-}
+    color: white;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive fix */
+  @media (max-width: 768px) {
+    .buttons {
+      flex-direction: column;
+    }
+  
+    .buttons button {
+      width: 80vw;
+      font-size: 20px;
+      padding: 40px 10px;
+    }
+  }
+  
