@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 const StaffSinglePage = () => {
   const pathname = usePathname();
-  const staffId = pathname.split("SingleStaff")[1];
+  const staffId = pathname?.split("SingleStaff")[1] || null;
 
   const [staff, setStaff] = useState(null);
   const [student, setStudent] = useState(null);
@@ -18,11 +18,14 @@ const StaffSinglePage = () => {
 
   // Fetch staff details
   useEffect(() => {
+    if(!staffId) return;
     const fetchStaff = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`/api/clearance/staff/${staffId}`);
-        setStaff(response.data);
+        console.log("Fetched staff:", response.data);
+        setStaff(response.data.staff);
+        console.log("Staff Fetched : ", setStaff)
       } catch (error) {
         console.log(error);
         toast.error("There was an error while fetching staff.");
@@ -103,7 +106,7 @@ const StaffSinglePage = () => {
     formData.append("department", student?.department);
     formData.append("faculty", student?.faculty);
     formData.append("level", "400");
-
+    formData.append("staff_id", staff?.staff_id); 
     images.forEach((image) => {
       formData.append("images", image);
     });
@@ -122,17 +125,6 @@ const StaffSinglePage = () => {
       toast.error("There was an error while uploading.");
     } finally {
       setLoading(false);
-    }
-  };
-  const getStatusBackground = (status) => {
-    console.log("Status:", status); // Debugging the status value
-    switch (status?.toLowerCase()) {
-      case "accepted":
-        return styles.accepted;
-      case "rejected":
-        return styles.rejected;
-      default:
-        return styles.pending;
     }
   };
 
@@ -200,9 +192,13 @@ const StaffSinglePage = () => {
 
                   <label>Status</label>
                   <p
-                    className={`${styles.status} ${getStatusBackground(
-                      clearanceData?.status
-                    )}`}>
+                     className={
+                      clearanceData?.status === "approved"
+                        ? styles.approved
+                        : clearanceData?.status === "rejected"
+                        ? styles.rejected
+                        : styles.pending
+                    }>
                     {clearanceData?.status || "Pending"}
                   </p>
 

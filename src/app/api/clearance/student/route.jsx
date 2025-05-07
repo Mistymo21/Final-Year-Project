@@ -15,6 +15,7 @@ export async function POST(request) {
     const department = formData.get("department");
     const faculty = formData.get("faculty");
     const level = formData.get("level");
+    const staff_id = formData.get("staff_id");
 
     // Validate the data
     if (!studentName || !matricNo || !department || !faculty || !level) {
@@ -52,6 +53,7 @@ export async function POST(request) {
         department,
         faculty,
         level,
+        staff_id,
         imageUrls,
         public_ids,
         status: "pending", // Reset to pending
@@ -68,6 +70,7 @@ export async function POST(request) {
       department,
       faculty,
       level,
+      staff_id: staff_id,
       imageUrls,
       public_ids,
       status: "pending",

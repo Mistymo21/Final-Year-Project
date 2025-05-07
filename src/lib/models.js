@@ -136,6 +136,10 @@ const ClearanceSubmissionSchema = new mongoose.Schema({
   reviewedBy: {
     type: "String",
   },
+  staff_id: {
+    type: String, 
+    required: true,
+  },
 }, { timestamps: true });
 
 // Create the model from the schema

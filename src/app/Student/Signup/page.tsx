@@ -4,6 +4,8 @@ import {  useEffect } from "react";
 import styles from "./StudentReg.module.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
 function SignupPage() {
   const router = useRouter();
   const [user, setUser] = React.useState({
@@ -31,14 +33,15 @@ function SignupPage() {
     try {
       setLoading(true);
       const response = await axios.post("/api/user/student/signup", user);
-      console.log("Signup successful", response.data);
+      toast.success("Signup successful");
+      console.log(response.data)
       
       router.push("Login");
     } catch (error) {
       if (error.response) {
-        setError(error.response.data.error);
+        toast.error(error.response.data.error);
       } else {
-        setError("An unexpected error occurred");
+        toast.error("An unexpected error occurred");
       }
     } finally {
       setLoading(false);

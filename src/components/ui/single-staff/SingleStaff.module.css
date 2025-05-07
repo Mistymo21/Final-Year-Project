@@ -79,14 +79,33 @@
   text-align: center;
 }
 
-.accepted {
-  background-color: #28a745; /* Green */
+.approved{
+  text-transform: capitalize;
+  background-color: rgb(133, 195, 41);
+  font-weight: 700;
+  color: white;
+  padding: 10px;
+  text-align: center;
 }
 
-.rejected {
-  background-color: #dc3545; /* Red */
+.rejected{
+  background-color: red;
+  color: white;
+  text-transform: capitalize;
+  font-weight: 700;
+  padding: 10px;
+  text-align: center;
+
+
 }
 
-.pending {
-  background-color: #ffc107; /* Yellow */
+.pending{
+  background-color: #ccc;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: white;
+  padding: 10px;
+  text-align: center;
+
+
 }

@@ -1,0 +1,137 @@
+.container{
+    padding: 0px 20px;
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+.text{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+
+.text h1{
+    font-size: 20px;
+}
+
+.text p{
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.studentInfo{
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.details{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.img{
+    border: 1px solid black;
+    width: 100px;
+    width: 150px;
+    text-align: center;
+    font-size: 25px;
+}
+
+.img p{
+    margin-top: 20px;
+}
+
+.desc{
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.tableContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  min-width: 600px;
+}
+
+.tableContainer table td,
+.tableContainer table th {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+.tableContainer table tr:nth-child(even) {
+  background-color: rgb(240, 240, 240);
+}
+
+
+.approved{
+    text-transform: capitalize;
+    background-color: rgb(133, 195, 41);
+    font-weight: 700;
+    color: white;
+}
+
+.rejected{
+    background-color: red;
+    color: white;
+    text-transform: capitalize;
+    font-weight: 700;
+}
+
+.pending{
+    background-color: #ccc;
+    font-weight: 700;
+    text-transform: capitalize;
+    color: white;
+}
+
+
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .text h1 {
+    font-size: 16px;
+  }
+
+  .text p {
+    font-size: 14px;
+  }
+
+  .studentInfo {
+    font-size: 10px;
+    display: flex;
+    gap: 60px;
+  }
+
+  .img {
+    width: 100%;
+    font-size: 8px;
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+  }
+
+  .img p {
+    margin-top: 10px;
+  }
+  .bottom h2 {
+    font-size: 16px;
+  }
+} 

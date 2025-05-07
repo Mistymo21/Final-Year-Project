@@ -7,8 +7,9 @@ const StudentTable = async () => {
   const students = await getClearanceSubmissions();
 
   const totalStudents = students.length;
-  const clearedStudents = students.filter(s => s.status === "accepted").length;
+  const clearedStudents = students.filter(s => s.status === "approved").length;
   const submittedStudents = students.filter(s => s.status !== "pending").length;
+  const rejectedStudents = students.filter(s => s.status === "rejected").length;
 
   return (
     <div className={styles.container}>
@@ -21,6 +22,10 @@ const StudentTable = async () => {
         <div className={styles.box}>
           <p>Number of students cleared</p>
           <span className={styles.total}>{clearedStudents}</span>
+        </div>
+        <div className={styles.box}>
+          <p>Number of students rejected</p>
+          <span className={styles.total}>{rejectedStudents}</span>
         </div>
         <div className={styles.box}>
           <p>Number of students submitted</p>

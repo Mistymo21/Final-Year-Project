@@ -60,6 +60,7 @@ export async function POST(request) {
         staff: {
           staff_id: user.staff_id,
           unit: user.unit,
+          faculty: user.faculty,
           firstName: user.firstName, 
           lastName: user.lastName,
           _id: user._id,

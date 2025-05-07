@@ -51,6 +51,39 @@ const menuItems = [
     ],
   },
 ];
+const studentItems = [
+  {
+    title: "Pages",
+    list: [
+      {
+        title: "Dashboard",
+        path: "/Student/StudentPage",
+        icon: <MdDashboard />,
+      },
+      {
+        title: "User",
+        path:"/Student/User",
+        icon: <MdSupervisedUserCircle />,
+      },
+     
+    ],
+  },
+  {
+    title: "User",
+    list: [
+      {
+        title: "Settings",
+        path: "Staff/settings",
+        icon: <MdOutlineSettings />,
+      },
+      {
+        title: "Help",
+        path: "/dashboard/help",
+        icon: <MdHelpCenter />,
+      },
+    ],
+  },
+];
 
 export const Sidebar = () => {
   const [staff, setStaff] = React.useState(null);
@@ -123,7 +156,7 @@ export const StudentSidebar = () =>{
         </div>
       </div>
       <ul className={styles.list}>
-        {menuItems.map((cat) => (
+        {studentItems.map((cat) => (
           <li key={cat.title}>
             {cat.title}
             <span className={styles.cats}>

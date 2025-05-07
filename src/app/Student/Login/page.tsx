@@ -6,6 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
+
 function Loginpage() {
   const router = useRouter();
   const [isloading, setIsloading] = React.useState(false);
@@ -19,16 +20,19 @@ function Loginpage() {
     try {
       setIsloading(true);
       const response = await axios.post("/api/user/student/login", user);
+      
       if (response.status === 200) {
+        toast.success("Login Successful");
         localStorage.setItem("student", JSON.stringify(response.data.student));
         localStorage.setItem("token", response.data.token);
-        console.log("Token:", response.data.token); // Debug token
         router.push("StudentPage");
-      } else {
-        toast.error("Invalid credentials");
       }
     } catch (error) {
-      console.log("Something went wrong", error);
+      if (error.response && error.response.status === 401) {
+        toast.error("Invalid matric number or password");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     } finally {
       setIsloading(false);
     }

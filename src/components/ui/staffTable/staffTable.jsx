@@ -8,7 +8,7 @@ const StaffTable= async () => {
     <div className={styles.container}>
       <h1>Dashboard</h1>
       <div  className={styles.right}>
-        <Link href=''>Print Clearance</Link>
+        <Link href='/Student/Print' className={styles.link}>Print Clearance</Link>
       </div>
       <div className={styles.tableContainer}>
         <table>

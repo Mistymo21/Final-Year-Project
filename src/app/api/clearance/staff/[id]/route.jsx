@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/database/db";
 import { Staff } from "@/lib/models.js";
-
+import {ClearanceSubmission} from "@/lib/models.js";
 export async function GET(Request, { params }) {
   const id = await params?.id;
 
@@ -14,7 +14,18 @@ export async function GET(Request, { params }) {
       return NextResponse.json({ message: "Staff not found" }, { status: 400 });
     }
 
-    return NextResponse.json(staff, { status: 200 });
+    const submissions = await ClearanceSubmission.find({
+      staff_id: id,
+      status: "pending",
+    });
+
+    return NextResponse.json(
+      {
+        staff,
+        submissions,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json(
