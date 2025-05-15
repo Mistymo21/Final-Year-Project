@@ -91,35 +91,11 @@ const StaffSchema = new mongoose.Schema(
 );
 
 
-const ClearanceSubmissionSchema = new mongoose.Schema({
+import mongoose from "mongoose";
 
-  studentName: {
+const ClearanceStageSchema = new mongoose.Schema({
+  unit: {
     type: String,
-    required: true,
-  },
-  matricNo: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  department: {
-    type: String,
-    required: true,
-  },
-  faculty: {
-    type: String,
-    required: true,
-  },
-  level: {
-    type: String,
-    required: true,
-  },
-  imageUrls: {
-    type: [String],
-    required: true,
-  },
-  public_ids: {
-    type: [String],
     required: true,
   },
   status: {
@@ -127,27 +103,70 @@ const ClearanceSubmissionSchema = new mongoose.Schema({
     enum: ["pending", "approved", "rejected"],
     default: "pending",
   },
-  comment: {
-    type: String,
-  },
-  staffsignature:{
-    type: String,
-  },
-  reviewedBy: {
-    type: "String",
-  },
-  staff_id: {
-    type: String, 
-    required: true,
-  },
-}, { timestamps: true });
+  reviewedBy: String,
+  comment: String,
+  staffSignature: String,
+  updatedAt: Date,
+});
 
-// Create the model from the schema
+const ClearanceSubmissionSchema = new mongoose.Schema(
+  {
+    studentName: {
+      type: String,
+      required: true,
+    },
+    matricNo: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    department: {
+      type: String,
+      required: true,
+    },
+    faculty: {
+      type: String,
+      required: true,
+    },
+    level: {
+      type: String,
+      required: true,
+    },
+    imageUrls: {
+      type: [String],
+      required: true,
+    },
+    public_ids: {
+      type: [String],
+      required: true,
+    },
+    currentStageIndex: {
+      type: Number,
+      default: 0, // Starts from the first staff in the chain
+    },
+    clearanceHistory: {
+      type: [ClearanceStageSchema], // Full clearance progress
+      default: [],
+    },
+    status: {
+      type: String,
+      enum: ["in_progress", "approved", "rejected"],
+      default: "in_progress",
+    },
+    lastRejectedBy: String,
+    rejectionReason: String,
+    staff_id: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+// Create the model
 export const ClearanceSubmission =
   mongoose.models.ClearanceSubmission ||
   mongoose.model("ClearanceSubmission", ClearanceSubmissionSchema);
-
-
 
 
 

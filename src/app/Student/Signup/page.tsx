@@ -155,13 +155,13 @@ function SignupPage() {
                     setUser({ ...user, department: e.target.value })
                   }>
                   <option value="hidden">Choose Department</option>
-                  <option value="computer">
+                  <option value="Computer">
                    Computer Science
                   </option>
-                  <option value="software">
+                  <option value="Software">
                     Software
                   </option>
-                  <option value="cyber">Cyber Security</option>
+                  <option value="Cyber">Cyber Security</option>
                 </select>
 
                 <label htmlFor="#">Password</label>

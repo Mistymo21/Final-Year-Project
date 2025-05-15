@@ -29,7 +29,7 @@ const menuItems = [
       },
       {
         title: "Users",
-        path:"Student/",
+        path:"/Staff/User",
         icon: <MdSupervisedUserCircle />,
       },
      
@@ -40,7 +40,7 @@ const menuItems = [
     list: [
       {
         title: "Settings",
-        path: "Staff/settings",
+        path: "/Staff/Settings",
         icon: <MdOutlineSettings />,
       },
       {

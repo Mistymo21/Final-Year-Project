@@ -118,6 +118,7 @@ const StaffSinglePage = () => {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
+       console.log("Upload success:", res.data);
       toast.success("Submitted successfully");
       console.log(response.data);
     } catch (error) {

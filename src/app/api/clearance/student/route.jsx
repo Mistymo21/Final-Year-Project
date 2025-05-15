@@ -56,8 +56,8 @@ export async function POST(request) {
         staff_id,
         imageUrls,
         public_ids,
-        status: "pending", // Reset to pending
-        comment: "",       // Clear the rejection comment
+        status: "pending",
+        comment: "",      
       });
 
       return NextResponse.json({ message: "Re-submission after rejection successful" }, { status: 200 });

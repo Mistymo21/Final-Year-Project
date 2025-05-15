@@ -33,6 +33,11 @@
     justify-content: space-between;
 }
 
+.info{
+    display: flex;
+
+    gap: 10px;
+}
 
 .details{
     display: flex;

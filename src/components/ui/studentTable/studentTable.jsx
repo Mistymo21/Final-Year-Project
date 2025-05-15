@@ -2,14 +2,27 @@ import React from "react";
 import styles from "./studentTable.module.css";
 import Link from "next/link";
 import { getClearanceSubmissions } from "@/lib/data";
+import moment from "moment/moment";
+
+
+
+
 
 const StudentTable = async () => {
   const students = await getClearanceSubmissions();
 
+  
+
   const totalStudents = students.length;
-  const clearedStudents = students.filter(s => s.status === "approved").length;
-  const submittedStudents = students.filter(s => s.status !== "pending").length;
-  const rejectedStudents = students.filter(s => s.status === "rejected").length;
+  const clearedStudents = students.filter(
+    (s) => s.status === "approved"
+  ).length;
+  const submittedStudents = students.filter(
+    (s) => s.status !== "pending"
+  ).length;
+  const rejectedStudents = students.filter(
+    (s) => s.status === "rejected"
+  ).length;
 
   return (
     <div className={styles.container}>
@@ -27,11 +40,9 @@ const StudentTable = async () => {
           <p>Number of students rejected</p>
           <span className={styles.total}>{rejectedStudents}</span>
         </div>
-        <div className={styles.box}>
-          <p>Number of students submitted</p>
-          <span className={styles.total}>{submittedStudents}</span>
-        </div>
       </div>
+
+
 
       <div className={styles.tableContainer}>
         <table>
@@ -52,12 +63,11 @@ const StudentTable = async () => {
                 <td>{student.matricNo}</td>
                 <td>{student.department}</td>
                 <td>{student.faculty}</td>
-                <td>{new Date(student.createdAt).toLocaleDateString()}</td>
+                <td>{moment().format("DD/MM/YYYY")}</td>
                 <td>
                   <Link
                     href={`/Staff/SingleStudent/${student.id}`}
-                    className={styles.btn}
-                  >
+                    className={styles.btn}>
                     <button>View</button>
                   </Link>
                 </td>

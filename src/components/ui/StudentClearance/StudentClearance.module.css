@@ -1,0 +1,140 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 50px;
+
+}
+
+
+.inputs{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.inputs input{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 60%;
+    margin-top: 20px;
+}
+
+.form button{
+    width:60%;
+    padding: 10px 0px;
+    cursor: pointer;
+   
+    
+}
+
+.fileInputWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.fileInputWrapper label {
+  padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .fileInputWrapper span{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+    /* margin-bottom: 5px; */
+  }
+
+.imagePreview {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .imagePreview img {
+    max-width: 150px;
+    max-height: 150px;
+  }
+  
+  .deleteButton {
+    margin-top: 5px;
+    padding: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 30px;
+    
+  }
+
+.unit{
+  
+}
+
+
+
+.table{
+    padding: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table td,
+.table th{
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    
+}
+
+
+.table tr:nth-child(even){
+    background-color: rgb(240, 240, 240);
+}
+
+
+.statusCleared {
+  color: #059669;
+}
+
+.statusRejected {
+  color: #dc2626;
+}
+
+.statusPending {
+  color: #4b5563;
+}
+
+.rejectionBox {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #f87171;
+  background-color: #fef2f2;
+  border-radius: 0.25rem;
+}
+
+.rejectedBy {
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.rejectionReason {
+  color: #dc2626;
+} 

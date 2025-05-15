@@ -1,0 +1,70 @@
+.container {
+  padding: 1.5rem;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: auto;
+  border: 1px solid #e5e7eb;
+}
+
+.tableHeader {
+  background-color: #f3f4f6;
+}
+
+.tableHeaderCell {
+  text-align: left;
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.tableRow {
+  border: 1px solid #e5e7eb;
+}
+
+.tableCell {
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.statusCleared {
+  color: #059669;
+}
+
+.statusRejected {
+  color: #dc2626;
+}
+
+.statusPending {
+  color: #4b5563;
+}
+
+.rejectionBox {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #f87171;
+  background-color: #fef2f2;
+  border-radius: 0.25rem;
+}
+
+.rejectedBy {
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.rejectionReason {
+  color: #dc2626;
+} 
