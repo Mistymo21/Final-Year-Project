@@ -79,7 +79,7 @@ const SingleUserPage = () => {
     setIsAcceptModalOpen(false);
   } catch (error) {
     console.error("Error approving student", error);
-    toast.error("Error processing the approval.");
+    toast.error(error.response?.data?.message || "Error processing the approval.");
   }
 };
 

@@ -21,7 +21,7 @@ export async function GET(req, { params }) {
     return NextResponse.json(
       {
         status: clearance.status,
-        comment: clearance.comment,
+        clearanceHistory: clearance.clearanceHistory || []
       },
       { status: 200 }
     );

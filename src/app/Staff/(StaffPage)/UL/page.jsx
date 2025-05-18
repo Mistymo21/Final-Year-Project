@@ -4,11 +4,11 @@ import React from "react";
 
 // import Link from "next/link";
 
-const LA = async () => {
+const UL = async () => {
   
   return (
     <StudentTable />
   );
 };
 
-export default LA;
+export default UL;

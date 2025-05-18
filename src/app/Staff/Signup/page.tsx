@@ -5,6 +5,27 @@ import styles from "./StaffReg.module.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+
+const Units = [
+      "Head of Department",
+      "Faculty Officer",
+      "Dean of Faculty",
+      "Hostel Warden",
+      "Director, Clinic",
+      "Director of Sports",
+      "Director of Works",
+      "University Librarian",
+      "Dean, Student Affairs",
+      "Stores Officer",
+      "Accountant (Students)",
+      "University Alumni Association",
+      "Director, CPPS (Top-Up only)",
+      "Director, IOE (Sandwich only)",
+      "Studio Manager",
+    ];
+
+
+
 function SignupPage() {
   const router = useRouter();
   const [user, setUser] = React.useState({
@@ -132,16 +153,12 @@ function SignupPage() {
                   <option value="hidden" className="text-black">
                     Choose unit
                   </option>
-                  <option value="Faculty Officer" className="text-black">
-                    Faculty Officer
-                  </option>
-                  <option value="HOD" className="text-black">
-                    HOD
-                  </option>
-                  <option value="Level adviser" className="text-black">
-                    Level adviser
-                  </option>
-                </select>
+                  {Units.map((unit, index) => (
+                    <option key={index} value={unit}>
+                      {unit}
+                    </option>
+                  ))}
+                                  </select>
 
                 <label htmlFor="faculty">Faculty</label>
                 <select

@@ -79,7 +79,23 @@ const StaffSchema = new mongoose.Schema(
     },
     unit: {
       type: String,
-      enumerator: ["Hod", "Faculty Officer", "Level adviser"],
+      enumerator: [
+        "Head of Department",
+        "Faculty Officer",
+        "Dean of Faculty",
+        "Hostel Warden",
+        "Director, Clinic",
+        "Director of Sports",
+        "Director of Works",
+        "University Librarian",
+        "Dean, Student Affairs",
+        "Stores Officer",
+        "Accountant (Students)",
+        "University Alumni Association",
+        "Director, CPPS (Top-Up only)",
+        "Director, IOE (Sandwich only)",
+        "Studio Manager",
+      ],
       required: true,
     },
     forgotPasswordToken: String,
@@ -90,9 +106,6 @@ const StaffSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
-import mongoose from "mongoose";
-
 const ClearanceStageSchema = new mongoose.Schema({
   unit: {
     type: String,
@@ -100,7 +113,7 @@ const ClearanceStageSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected"],
+    enumerator: ["pending", "approved", "rejected"],
     default: "pending",
   },
   reviewedBy: String,
@@ -150,8 +163,8 @@ const ClearanceSubmissionSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["in_progress", "approved", "rejected"],
-      default: "in_progress",
+      enum: ["pending", "in_progress", "approved", "rejected"],
+      default: "pending",
     },
     lastRejectedBy: String,
     rejectionReason: String,
@@ -168,19 +181,8 @@ export const ClearanceSubmission =
   mongoose.models.ClearanceSubmission ||
   mongoose.model("ClearanceSubmission", ClearanceSubmissionSchema);
 
-
-
-
-
-
-
-
-
-
 export const Student =
   mongoose.models.Student || mongoose.model("Student", studentSchema);
 
 export const Staff =
-  mongoose.models.staff || mongoose.model("staff", StaffSchema);
-
-
+  mongoose.models.Staff || mongoose.model("Staff", StaffSchema);

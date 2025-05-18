@@ -7,6 +7,26 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Notification from "@/components/ui/notification/notification"; 
 
+
+const Units = [
+      "Head of Department",
+      "Faculty Officer",
+      "Dean of Faculty",
+      "Hostel Warden",
+      "Director, Clinic",
+      "Director of Sports",
+      "Director of Works",
+      "University Librarian",
+      "Dean, Student Affairs",
+      "Stores Officer",
+      "Accountant (Students)",
+      "University Alumni Association",
+      "Director, CPPS (Top-Up only)",
+      "Director, IOE (Sandwich only)",
+      "Studio Manager",
+    ];
+
+
 function LoginPage() {
   const router = useRouter();
   const [isloading, setIsloading] = React.useState(false);
@@ -20,39 +40,85 @@ function LoginPage() {
 
   const onLogin = async () => {
     try {
-      setIsloading(true);
-      const response = await axios.post("/api/user/staff/login", user);
-      console.log(response.data);
+    setIsloading(true);
+    const response = await axios.post("/api/user/staff/login", user);
+    console.log(response.data);
 
-      if (response.status === 200) {
-        localStorage.setItem("staff", JSON.stringify(response.data.staff));
-        localStorage.setItem("token", response.data.token);
+    if (response.status === 200) {
+      const staffUnit = response.data.staff.unit?.trim().toLowerCase();
+      const selectedUnit = user.unit.trim().toLowerCase();
 
-        toast.success("Login successful!");
-        setIsLoggedIn(true);
-
-        switch (user.unit.trim().toLowerCase()) {
-          case "level adviser":
-            router.push("/Staff/LA");
-            break;
-          case "faculty officer":
-            router.push("/Staff/Faculty-Officer");
-            break;
-          case "hod":
-            router.push("/Staff/Hod");
-            break;
-          default:
-            toast.error("Invalid unit selected");
-        }
-      } else {
-        toast.error("Invalid credentials");
+      // Check if the selected unit matches the unit from the database
+      if ( selectedUnit !== staffUnit ) {
+        toast.error("Invalid credentials: Unit mismatch");
+        return;
       }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setIsloading(false);
+
+      localStorage.setItem("staff", JSON.stringify(response.data.staff));
+      localStorage.setItem("token", response.data.token);
+
+      if (response.data.success) {
+        setIsLoggedIn(true);
+        toast.success(response.data.message);
+      }       
+
+      switch ((user.unit)) {
+        case "Head of Department":
+          router.push("/Staff/HOD");
+          break;
+        case "Faculty Officer":
+          router.push("/Staff/FO");
+          break;
+        case "Hostel Warden":
+          router.push("/Staff/HW");
+          break;
+        case "Director, Clinic":
+          router.push("/Staff/DC");
+          break;
+        case "Director of Sports":
+          router.push("/Staff/DOS");
+          break;
+        case "Director of Works":
+          router.push("/Staff/DOW");
+          break;
+        case "University Librarian":
+          router.push("/Staff/UL");
+          break;
+        case "Dean, Student Affairs":
+          router.push("/Staff/DSA");
+          break;
+        case "Stores Officer":
+          router.push("/Staff/SO");
+          break;
+        case "Accountant (Students)":
+          router.push("/Staff/AS");
+          break;
+        case "University Alumni Association":
+          router.push("/Staff/UAA");
+          break;
+        case "Director, CPPS (Top-Up only)":
+          router.push("/Staff/DCPPS");
+          break;
+        case "Director, IOE (Sandwich only)":
+          router.push("/Staff/DIOE");
+          break;
+        case "Studio Manager":
+          router.push("/Staff/SM");
+          break;
+        default:
+          toast.error("Invalid unit");
+      }
+    } else {
+      toast.error("Invalid credentials");
     }
+  } catch (error) {
+    console.error("Login error:", error);
+    toast.error(error.response?.data?.message || "An error occurred");
+
+  } finally {
+    setIsloading(false);
+}
+
   };
 
   useEffect(() => {
@@ -115,9 +181,11 @@ function LoginPage() {
                   }
                 >
                   <option value="">Choose unit</option>
-                  <option value="Faculty Officer">Faculty Officer</option>
-                  <option value="HOD">HOD</option>
-                  <option value="Level Adviser">Level Adviser</option>
+                  {Units.map((unit, index) => (
+                    <option key={index} value={unit}>
+                      {unit}
+                    </option>
+                  ))}
                 </select>
               </div>
 
