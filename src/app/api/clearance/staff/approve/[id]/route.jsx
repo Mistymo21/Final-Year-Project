@@ -25,30 +25,34 @@ export async function PATCH(request, { params }) {
     }
 
     const currentIndex = student.currentStageIndex;
-    const clearanceChain = student.clearanceChain || [];
+    const clearanceHistory = student.clearanceHistory || [];
 
-    // Ensure current stage exists
-    if (!clearanceChain[currentIndex]) {
-      return NextResponse.json({ message: "Invalid clearance stage." }, { status: 400 });
-    }
+if (clearanceHistory.length === 0) {
+  return NextResponse.json({ message: "Clearance history is empty." }, { status: 400 });
+}
 
-    // Update current stage with approval
-    clearanceChain[currentIndex].status = "approved";
-    clearanceChain[currentIndex].comment = "Approved by staff";
-    clearanceChain[currentIndex].reviewedBy = reviewedBy || "Unknown Staff";
-    clearanceChain[currentIndex].timestamp = new Date();
+if (currentIndex < 0 || currentIndex >= clearanceHistory.length) {
+  return NextResponse.json({ message: "Invalid clearance stage index." }, { status: 400 });
+}
 
-    // Move to next stage if any
-    const isLastStage = currentIndex >= clearanceChain.length - 1;
-    const newStageIndex = isLastStage ? currentIndex : currentIndex + 1;
+// Update current stage with approval
+clearanceHistory[currentIndex].status = "approved";
+clearanceHistory[currentIndex].comment = "Approved by staff";
+clearanceHistory[currentIndex].reviewedBy = reviewedBy || "Unknown Staff";
+clearanceHistory[currentIndex].timestamp = new Date();
 
-    // Update student record
-    student.clearanceChain = clearanceChain;
-    student.currentStageIndex = newStageIndex;
-    student.staffsignature = uploadedSignature.secure_url;
-    student.staffsignaturePublicId = uploadedSignature.public_id;
+// Move to next stage if any
+const isLastStage = currentIndex >= clearanceHistory.length - 1;
+const newStageIndex = isLastStage ? currentIndex : currentIndex + 1;
 
-    await student.save();
+// Update student record
+student.clearanceHistory = clearanceHistory;
+student.currentStageIndex = newStageIndex;
+student.staffsignature = uploadedSignature.secure_url;
+student.staffsignaturePublicId = uploadedSignature.public_id;
+
+await student.save();
+
 
     return NextResponse.json(
       { message: "Student approved and moved to next stage", data: student },
