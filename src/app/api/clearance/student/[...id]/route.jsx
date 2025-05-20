@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import connect from "@/database/db.js";
-import {ClearanceSubmission} from "@/lib/models.js";
+import { ClearanceSubmission } from "@/lib/models.js";
 
 // GET /api/clearance/student/[matricNo]
 export async function GET(req, { params }) {
-  const { matricNo } = params;
+  const matricNo = decodeURIComponent(params.matricNo); // decode to handle slashes
 
   await connect();
 

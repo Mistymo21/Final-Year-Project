@@ -98,6 +98,11 @@ const StaffSchema = new mongoose.Schema(
       ],
       required: true,
     },
+    signatureUrl: {
+      type: String,
+      default: "",
+
+    },
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
     verifyToken: String,

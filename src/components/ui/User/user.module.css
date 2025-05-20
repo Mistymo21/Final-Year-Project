@@ -1,0 +1,72 @@
+
+
+.formContainer form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin-top: 20px;
+}
+.formGroup{
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.formGroup input{
+    padding: 8px;
+    border-radius: 8px;
+    width: 70%;
+    border: none;
+    outline: none;
+    border: 1px solid #ccc;
+ 
+}
+
+.formGroup input:focus{
+    border: 1px solid #000;
+}
+.formGroup label{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.fileUpload{
+    display: flex;
+}
+
+
+.btn{
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 30%;
+    align-self: flex-end;
+    
+}
+
+.imagePreview {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .imagePreview img {
+    max-width: 150px;
+    max-height: 150px;
+  }
+  
+  .deleteButton {
+    margin-top: 5px;
+    padding: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 30px;
+    
+  }

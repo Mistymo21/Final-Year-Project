@@ -136,8 +136,7 @@ const StudentClearance = () => {
             <label>Level: </label>
             <input value="400" disabled />
 
-            <label>Status</label>
-            <p>Pending</p>
+       
             <div className={styles.fileInputWrapper}>
               <span>
                 <h2>Upload Clearance Document</h2>

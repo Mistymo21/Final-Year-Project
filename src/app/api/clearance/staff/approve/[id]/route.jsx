@@ -14,7 +14,10 @@ export async function PATCH(request, { params }) {
     const reviewedBy = formData.get("reviewedBy");
 
     if (!signature || typeof signature === "string") {
-      return NextResponse.json({ message: "Signature file is required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Signature file is required" },
+        { status: 400 }
+      );
     }
 
     const uploadedSignature = await UploadImage(signature, "image-upload");
@@ -27,32 +30,40 @@ export async function PATCH(request, { params }) {
     const currentIndex = student.currentStageIndex;
     const clearanceHistory = student.clearanceHistory || [];
 
-if (clearanceHistory.length === 0) {
-  return NextResponse.json({ message: "Clearance history is empty." }, { status: 400 });
-}
+    if (clearanceHistory.length === 0) {
+      return NextResponse.json(
+        { message: "Clearance history is empty." },
+        { status: 400 }
+      );
+    }
 
-if (currentIndex < 0 || currentIndex >= clearanceHistory.length) {
-  return NextResponse.json({ message: "Invalid clearance stage index." }, { status: 400 });
-}
+    if (currentIndex < 0 || currentIndex >= clearanceHistory.length) {
+      return NextResponse.json(
+        { message: "Invalid clearance stage index." },
+        { status: 400 }
+      );
+    }
 
-// Update current stage with approval
-clearanceHistory[currentIndex].status = "approved";
-clearanceHistory[currentIndex].comment = "Approved by staff";
-clearanceHistory[currentIndex].reviewedBy = reviewedBy || "Unknown Staff";
-clearanceHistory[currentIndex].timestamp = new Date();
+    // Get unit name for dynamic comment
+    const staffUnit = clearanceHistory[currentIndex].unit;
 
-// Move to next stage if any
-const isLastStage = currentIndex >= clearanceHistory.length - 1;
-const newStageIndex = isLastStage ? currentIndex : currentIndex + 1;
+    // Update current clearance stage
+    clearanceHistory[currentIndex].status = "approved";
+    clearanceHistory[currentIndex].comment = `Approved by ${staffUnit}`;
+    clearanceHistory[currentIndex].reviewedBy = reviewedBy || "Unknown Staff";
+    clearanceHistory[currentIndex].staffSignature = uploadedSignature.secure_url;
+    clearanceHistory[currentIndex].signaturePublicId = uploadedSignature.public_id;
+    clearanceHistory[currentIndex].updatedAt = new Date();
 
-// Update student record
-student.clearanceHistory = clearanceHistory;
-student.currentStageIndex = newStageIndex;
-student.staffsignature = uploadedSignature.secure_url;
-student.staffsignaturePublicId = uploadedSignature.public_id;
+    // Move to next stage if any
+    const isLastStage = currentIndex >= clearanceHistory.length - 1;
+    const newStageIndex = isLastStage ? currentIndex : currentIndex + 1;
 
-await student.save();
+    // Update main student record
+    student.clearanceHistory = clearanceHistory;
+    student.currentStageIndex = newStageIndex;
 
+    await student.save();
 
     return NextResponse.json(
       { message: "Student approved and moved to next stage", data: student },
@@ -61,6 +72,9 @@ await student.save();
 
   } catch (error) {
     console.error("Approval Error:", error);
-    return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: "Internal Server Error", error: error.message },
+      { status: 500 }
+    );
   }
 }
