@@ -14,10 +14,7 @@ export async function GET(request, { params }) {
       return NextResponse.json({ message: "Clearance not found" }, { status: 404 });
     }
 
-    return NextResponse.json({
-      status: clearance.status,
-      comment: clearance.comment,
-    }, { status: 200 });
+    return NextResponse.json(clearance, { status: 200 });
 
   } catch (error) {
     console.error("Error fetching clearance:", error);

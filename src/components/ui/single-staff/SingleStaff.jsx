@@ -115,7 +115,7 @@ const StaffSinglePage = () => {
       const response = await axios.post("/api/clearance/student", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
        console.log("Upload success:", res.data);

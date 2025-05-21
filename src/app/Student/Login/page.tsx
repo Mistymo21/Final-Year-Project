@@ -24,7 +24,7 @@ function Loginpage() {
       if (response.status === 200) {
         toast.success("Login Successful");
         localStorage.setItem("student", JSON.stringify(response.data.student));
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("studentToken", response.data.token);
         router.push("StudentPage");
       }
     } catch (error) {

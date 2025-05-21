@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./StudentClearance.module.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import moment from "moment/moment";
 
 const clearanceStages = [
   "Head of Department",
@@ -28,32 +29,48 @@ const StudentClearance = () => {
   const [student, setStudent] = useState(null);
   const [staff, setStaff] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [clearanceData, setClearanceData] = useState({});
 
   useEffect(() => {
     const storedStudent = JSON.parse(localStorage.getItem("student"));
-    if (storedStudent) {
-      setStudent(storedStudent);
-    }
-  }, []);
-  useEffect(() => {
-    const storedStaff = JSON.parse(localStorage.getItem("staff"));
-    if (storedStaff) {
-      setStaff(storedStaff);
-    }
+    if (storedStudent) setStudent(storedStudent);
   }, []);
 
-  const currentStatus = {
-    stageIndex: 4, // 0-based index of current clearance stage
-    status: "Rejected", // or "In Progress", "Cleared"
-    rejectedBy: "Hostel Warden",
-    rejectionReason: "Outstanding hostel dues",
-  };
+  useEffect(() => {
+    const storedStaff = JSON.parse(localStorage.getItem("staff"));
+    if (storedStaff) setStaff(storedStaff);
+  }, []);
+
+  useEffect(() => {
+    const fetchClearanceData = async () => {
+      if (!student?.matricNumber) return;
+
+      try {
+        const response = await axios.get("/api/clearance/student/getUpdate", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("studentToken")}`,
+          },
+        });
+        // Unpack clearance here
+        setClearanceData(response.data.clearance || {});
+        console.log("Clearance data:", response.data);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          setClearanceData(null);
+          toast.error("No clearance submission found yet.");
+        } else {
+          console.error("Error fetching clearance data:", error);
+          toast.error("Error fetching clearance data.");
+        }
+      }
+    };
+    fetchClearanceData();
+  }, [student?.matricNumber]);
 
   const handleImageChange = (e) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
       setImages((prev) => [...prev, ...selectedFiles]);
-
       const newPreviews = selectedFiles.map((file) =>
         URL.createObjectURL(file)
       );
@@ -66,7 +83,6 @@ const StudentClearance = () => {
     const updatedPreviews = [...imagePreviews];
     updatedImages.splice(index, 1);
     updatedPreviews.splice(index, 1);
-
     setImages(updatedImages);
     setImagePreviews(updatedPreviews);
   };
@@ -91,6 +107,7 @@ const StudentClearance = () => {
     formData.append("faculty", student?.faculty);
     formData.append("level", "400");
     formData.append("staff_id", staff?.staff_id);
+
     images.forEach((image) => {
       formData.append("images", image);
     });
@@ -99,7 +116,7 @@ const StudentClearance = () => {
       const response = await axios.post("/api/clearance/student", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("studentToken")}`,
         },
       });
       toast.success("Submitted successfully");
@@ -112,15 +129,41 @@ const StudentClearance = () => {
     }
   };
 
+  const latestHistory = clearanceData?.clearanceHistory || [];
+  const lastEntry = latestHistory[latestHistory.length - 1];
+
+  const rejectionEntry = [...latestHistory]
+    .reverse()
+    .find((item) => item.status === "rejected");
+
+  let currentUnit = null;
+
+  if (rejectionEntry) {
+    currentUnit = rejectionEntry.unit;
+  } else if (latestHistory.length > 0) {
+    const approvedUnits = latestHistory
+      .filter((entry) => entry.status === "approved")
+      .map((entry) => entry.unit);
+
+    const nextPendingUnit = clearanceStages.find(
+      (unit) => !approvedUnits.includes(unit)
+    );
+
+    currentUnit = nextPendingUnit || "Clearance Completed";
+  } else {
+    currentUnit = clearanceStages[0]; // First stage
+  }
+
   return (
     <div className={styles.container}>
       <h1>Student Clearance</h1>
+
       <div className={styles.upload}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputs}>
             <label>Name: </label>
             <input
-              value={student?.firstName + " " + student?.lastName || ""}
+              value={student ? `${student.firstName} ${student.lastName}` : ""}
               disabled
             />
 
@@ -136,7 +179,6 @@ const StudentClearance = () => {
             <label>Level: </label>
             <input value="400" disabled />
 
-       
             <div className={styles.fileInputWrapper}>
               <span>
                 <h2>Upload Clearance Document</h2>
@@ -164,26 +206,40 @@ const StudentClearance = () => {
               </div>
             </div>
           </div>
-          <button>Upload All</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Uploading..." : "Upload All"}
+          </button>
         </form>
       </div>
-      <div className={styles.unit}>
-        <p>
-          Your clearance is with: <b>Faculty Officer</b>
-        </p>
-      </div>
-      <div>
-          {currentStatus.status === "Rejected" && (
+
+      {/* Rejection Box */}
+      {rejectionEntry && (
         <div className={styles.rejectionBox}>
           <p className={styles.rejectedBy}>
-            Rejected by {currentStatus.rejectedBy}
+            Rejected by: <b>{rejectionEntry.unit}</b>
           </p>
           <p className={styles.rejectionReason}>
-            Reason: {currentStatus.rejectionReason}
+            Reason: {rejectionEntry.comment || "No reason provided"}
           </p>
         </div>
       )}
-      </div>
+
+      {/* Current Unit */}
+      {currentUnit && (
+        <h2>
+          {currentUnit === "Clearance Completed" ? (
+            "Your clearance is completed"
+          ) : (
+            <>
+            <span className={styles.currentUnit}>
+
+              Your clearance is currently with <b>{currentUnit}</b>
+            </span>
+            </>
+          )}
+        </h2>
+      )}
+      {/* Table */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -196,19 +252,41 @@ const StudentClearance = () => {
             </tr>
           </thead>
           <tbody>
-            {clearanceStages.map((unit, index) => (
-              <tr key={index} className={styles.tableRow}>
-                <td className={styles.tableCell}>{index + 1}</td>
-                <td className={styles.tableCell}>{unit}</td>
-                <td className={styles.tableCell}>Cleared</td>
-                <td className={styles.tableCell}>No Comment</td>
-                <td className={styles.tableCell}>2023-10-01</td>
-              </tr>
-            ))}
+            {clearanceStages.map((stage, index) => {
+              const historyEntry = latestHistory.find(
+                (item) => item.unit === stage
+              );
+
+              return (
+                <tr key={index} className={styles.tableRow}>
+                  <td className={styles.tableCell}>{index + 1}</td>
+                  <td className={styles.tableCell}>{stage}</td>
+                  <td
+                    className={`${styles.tableCell} ${
+                      historyEntry
+                        ? historyEntry.status === "approved"
+                          ? styles.statusCleared
+                          : historyEntry.status === "rejected"
+                          ? styles.statusRejected
+                          : styles.statusPending
+                        : styles.statusPending
+                    }`}>
+                    {historyEntry ? historyEntry.status : "Pending"}
+                  </td>
+                  <td className={styles.tableCell}>
+                    {historyEntry?.comment || "-"}
+                  </td>
+                  <td className={styles.tableCell}>
+                    {historyEntry?.updatedAt
+                      ? moment(historyEntry.updatedAt).format("DD/MM/YYYY")
+                      : "-"}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-    
     </div>
   );
 };

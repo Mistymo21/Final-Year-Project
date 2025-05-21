@@ -55,7 +55,7 @@ function LoginPage() {
       }
 
       localStorage.setItem("staff", JSON.stringify(response.data.staff));
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("staffToken", response.data.token);
 
       if (response.data.success) {
         setIsLoggedIn(true);

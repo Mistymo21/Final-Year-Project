@@ -124,8 +124,8 @@ const ClearanceStageSchema = new mongoose.Schema({
   reviewedBy: String,
   comment: String,
   staffSignature: String,
-  updatedAt: Date,
-});
+  
+},{ timestamps: true });
 
 const ClearanceSubmissionSchema = new mongoose.Schema(
   {

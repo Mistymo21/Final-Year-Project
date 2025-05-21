@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create a JWT token
-    const tokenData = { id: user.matric_no };
+    const tokenData = { matric_no: user.matric_no };
 
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",

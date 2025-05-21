@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 const SingleUserPage = () => {
   const [loading, setLoading] = useState(false);
   const pathname = usePathname();
-  const studentId = pathname.split("SingleStudent")[1];
+  const studentId = pathname.split("/").pop();
   const [student, setStudent] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [staff, setStaff] = useState(null);
@@ -84,25 +84,34 @@ const SingleUserPage = () => {
 };
 
 
-  const handleRejection = async () => {
-    if (!rejectionComment) {
-      toast.error("Please provide a reason for rejection.");
-      return;
-    }
+ const handleRejection = async () => {
+  if (!rejectionComment) {
+    toast.error("Please provide a reason for rejection.");
+    return;
+  }
 
-    try {
-      const response = await axios.patch(`/api/clearance/staff/reject/${studentId}`, {
-        studentId,
+  if (!staff?.unit) {
+    toast.error("Staff unit not found. Cannot reject.");
+    return;
+  }
+
+  try {
+    const response = await axios.patch(
+      `/api/clearance/staff/reject/${studentId}`,
+      {
         comment: rejectionComment,
-      });
+        unit: staff.unit, // send unit instead of staffId
+        reviewerName: `${staff?.firstName} ${staff?.lastName}`,
+      }
+    );
 
-      toast.success("Student rejected!");
-      setIsRejectModalOpen(false); // Close the modal after submission
-    } catch (error) {
-      console.error("Error rejecting student", error);
-      toast.error("Error processing the rejection.");
-    }
-  };
+    toast.success("Student rejected!");
+    setIsRejectModalOpen(false);
+  } catch (error) {
+    console.error("Error rejecting student", error);
+    toast.error(error.response?.data?.message || "Error processing the rejection.");
+  }
+};
 
   return (
     <>
