@@ -1,213 +1,260 @@
 .container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  max-width: 600px;
+  margin: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.Info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 20px;
+}
+
+.img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+.img:hover {
+  transform: scale(1.05);
+}
+
+.seperator {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  margin-bottom: 24px;
+  border-radius: 2px;
+}
+
+.details {
+  padding: 12px 0;
+  color: #374151; 
+}
+
+.details p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+.imgBox {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.box {
+  width: 110px;
+  height: 110px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;}
+.box:hover {
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.4);
+  transform: translateY(-5px);
+}
+
+.btns {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.accept, .reject {
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.accept {
+  background: linear-gradient(45deg, #22c55e, #16a34a);
+  color: white;
+}
+.accept:hover {
+  background: linear-gradient(45deg, #16a34a, #15803d);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+}
+
+.reject {
+  background: linear-gradient(45deg, #ef4444, #b91c1c);
+  color: white;
+}
+.reject:hover {
+  background: linear-gradient(45deg, #b91c1c, #991b1b);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
     padding: 20px;
   }
-  
-  .Info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .img {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .seperator {
-    width: 100%;
-    height: 2px;
-    background-color: #ccc;
-    margin-bottom: 20px;
-  }
-  
+
   .details {
-    padding: 10px;
-  }
-  
-  .details p {
+    padding: 8px 0;
     font-size: 16px;
-    margin-bottom: 8px;
   }
-  
+
   .imgBox {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
   }
-  
+
   .box {
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90px;
+    height: 90px;
   }
-  
+
   .btns {
-    display: flex;
+    flex-direction: column;
     gap: 15px;
-    margin-top: 20px;
   }
-  
-  .accept, .reject {
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 8px;
-  }
-  
-  .accept {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .reject {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  @media (max-width: 768px) {
-    .container {
-      padding: 15px;
-    }
-  
-    .details {
-      padding: 5px;
-    }
-  
-    .imgBox {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .box {
-      width: 80px;
-      height: 80px;
-    }
-  
-    .btns {
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-  }
-  
+}
 
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-  }
-  
-  .fullscreenImage {
-    object-fit: contain;
-  }
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Dim background */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.3s ease-in-out;
-  }
-  
-  .modalContent {
-    background: #fff;
-    padding: 2rem;
-    width: 90%;
-    max-width: 400px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    animation: slideIn 0.3s ease;
-  }
-  
-  .modalContent h2 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-  }
-  
-  .modalContent input,
-  .modalContent textarea {
-    width: 100%;
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    resize: none;
-  }
-  
-  .modalButtons {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  
-  .modalButtons button {
-    flex: 1;
-    padding: 0.7rem 1rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-  
-  .modalButtons button:first-child {
-    background-color: #10b981; /* green */
-    color: white;
-  }
-  
-  .modalButtons button:first-child:hover {
-    background-color: #059669;
-  }
-  
-  .modalButtons button:last-child {
-    background-color: #ef4444; /* red */
-    color: white;
-  }
-  
-  .modalButtons button:last-child:hover {
-    background-color: #dc2626;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      background: rgba(0, 0, 0, 0);
-    }
-    to {
-      background: rgba(0, 0, 0, 0.5);
-    }
-  }
-  
-  @keyframes slideIn {
-    from {
-      transform: translateY(-20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
+/* Modal styling (unchanged except slight polish) */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-in-out;
+  cursor: pointer;
+}
 
-  
+.fullscreenImageWrapper {
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  max-width: 90%;
+  max-height: 80%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  cursor: default;
+}
+
+.fullscreenImage {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  width: 90%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: slideIn 0.35s ease;
+}
+
+.modalContent h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.modalContent input,
+.modalContent textarea {
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1.8rem;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  color: #334155;
+  resize: none;
+  transition: border-color 0.3s ease;
+}
+
+.modalContent input:focus,
+.modalContent textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 8px rgba(79, 70, 229, 0.5);
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.modalButtons button {
+  flex: 1;
+  padding: 0.8rem 1.2rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+  user-select: none;
+}
+
+.modalButtons button:first-child {
+  background-color: #4ade80; /* lighter green */
+  color: #065f46;
+}
+.modalButtons button:first-child:hover {
+  background-color: #22c55e; /* darker green */
+}
+
+.modalButtons button:last-child {
+  background-color: #f87171; /* lighter red */
+  color: #7f1d1d;
+}
+.modalButtons button:last-child:hover {
+  background-color: #ef4444; /* darker red */
+}
+
+@keyframes fadeIn {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-25px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

@@ -25,7 +25,7 @@ const print = () => {
         `/api/clearance/getClearance?matricNo=${encodeURIComponent(matricNo)}`
       );
       console.log(response);
-      setStudent({...response.data, matricNo});
+      setStudent({ ...response.data[0], matricNo });
     };
     fetchClearanceDetails();
   }, []);
@@ -42,6 +42,7 @@ const print = () => {
           <p>2024/2025 ACADEMIC SESSION</p>
         </div>
       </div>
+      {/* <button onClick={() =>  window.print()}>Print</button> */}
       <div className={styles.studentInfo}>
         <div className={styles.details}>
           <div className={styles.info}>
@@ -80,11 +81,13 @@ const print = () => {
             </span>
           </div>
         </div>
-        <div className={styles.img}><p>
-          
-          Attach <br />your <br />passport
+        <div className={styles.img}>
+          <p>
+            Attach <br />
+            your <br />
+            passport
           </p>
-          </div>
+        </div>
       </div>
 
       <p className={styles.desc}>
@@ -104,33 +107,43 @@ const print = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{staff?.unit}</td>
-              <td>{student?.reviewedBy || "Waiting for staff to update"} </td>
-              <td
-                className={
-                  student?.status === "approved"
-                    ? styles.approved
-                    : student?.status === "rejected"
-                    ? styles.rejected
-                    : styles.pending
-                }>
-                {student?.status}{" "}
-              </td>
-              <td>
-                {student?.status === "approved" && student?.staffsignature ? (
-                  <Image
-                    src={student?.staffsignature}
-                    alt=""
-                    width={100}
-                    height={50}
-                  />
-                ) : (
-                  "Not Available"
-                )}
-              </td>
-              <td>{moment(student?.updatedAt).format("DD/MM/YYYY")}</td>
-            </tr>
+            {student?.clearanceHistory?.map((entry, index) => (
+              <tr key={index}>
+                <td>{entry.unit}</td>
+                <td>{entry.reviewedBy || "Waiting for staff to update"}</td>
+                <td
+                  className={
+                    entry.status === "approved"
+                      ? styles.approved
+                      : entry.status === "rejected"
+                      ? styles.rejected
+                      : styles.pending
+                  }>
+                  {entry.status}
+                </td>
+                <td>
+                  {entry.status === "approved" && entry.staffSignature ? (
+                    <Image
+                      src={entry.staffSignature}
+                      alt=""
+                      width={100}
+                      height={50}
+                    />
+                  ) : (
+                    "Not Available"
+                  )}
+                </td>
+                <td> {entry?.status !== "pending" &&
+                    entry?.updatedAt
+                      ? moment(entry.updatedAt).calendar(null, {
+                          sameDay: "DD/MM/YYYY",
+                          lastDay: "DD/MM/YYYY",
+                          lastWeek: "dddd",
+                          sameElse: "DD/MM/YYYY",
+                        })
+                      : "-"}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

@@ -4,6 +4,7 @@ import styles from "./StudentClearance.module.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import moment from "moment/moment";
+import Link from "next/link";
 
 const clearanceStages = [
   "Head of Department",
@@ -51,7 +52,7 @@ const StudentClearance = () => {
             Authorization: `Bearer ${localStorage.getItem("studentToken")}`,
           },
         });
-        // Unpack clearance here
+       
         setClearanceData(response.data.clearance || {});
         console.log("Clearance data:", response.data);
       } catch (error) {
@@ -231,10 +232,9 @@ const StudentClearance = () => {
             "Your clearance is completed"
           ) : (
             <>
-            <span className={styles.currentUnit}>
-
-              Your clearance is currently with <b>{currentUnit}</b>
-            </span>
+              <span className={styles.currentUnit}>
+                Your clearance is currently with <b>{currentUnit}</b>
+              </span>
             </>
           )}
         </h2>
@@ -277,8 +277,14 @@ const StudentClearance = () => {
                     {historyEntry?.comment || "-"}
                   </td>
                   <td className={styles.tableCell}>
-                    {historyEntry?.updatedAt
-                      ? moment(historyEntry.updatedAt).format("DD/MM/YYYY")
+                    {historyEntry?.status !== "pending" &&
+                    historyEntry?.updatedAt
+                      ? moment(historyEntry.updatedAt).calendar(null, {
+                          sameDay: "DD/MM/YYYY",
+                          lastDay: "DD/MM/YYYY",
+                          lastWeek: "dddd",
+                          sameElse: "DD/MM/YYYY",
+                        })
                       : "-"}
                   </td>
                 </tr>
@@ -286,6 +292,9 @@ const StudentClearance = () => {
             })}
           </tbody>
         </table>
+        <div  className={styles.right}>
+                <Link href='/Student/Print' className={styles.link}>Print Clearance</Link>
+              </div>
       </div>
     </div>
   );

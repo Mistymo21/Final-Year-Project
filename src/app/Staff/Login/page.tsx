@@ -69,6 +69,9 @@ function LoginPage() {
         case "Faculty Officer":
           router.push("/Staff/FO");
           break;
+        case "Dean of Faculty":
+          router.push("/Staff/DOF");
+          break;
         case "Hostel Warden":
           router.push("/Staff/HW");
           break;

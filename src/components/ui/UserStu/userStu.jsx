@@ -1,18 +1,18 @@
 "use client";
 import React, { useEffect } from "react";
-import styles from "./user.module.css";
+import styles from "./userStu.module.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 const user = () => {
-  const [staff, setStaff] = React.useState("");
-  const [signature, setSignature] = React.useState("");
+  const [student, setStudent] = React.useState("");
+  const [profileImg, setProfileImg] = React.useState("");
   const [file, setFile] = React.useState(null);
   const [preview, setPreview] = React.useState(null);
   useEffect(() => {
-    const staffData = localStorage.getItem("staff");
-    if (staffData) {
-      const staff = JSON.parse(staffData);
-      setStaff(staff);
+    const studentData = localStorage.getItem("student");
+    if (studentData) {
+      const student = JSON.parse(studentData);
+      setStudent(student);
     }
   }, []);
 
@@ -31,17 +31,17 @@ const user = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", file);
-    formData.append("staff_id", staff?.staff_id);
-    if (!file || !staff?.staff_id) {
+    formData.append("matric_no", student?.matricNumber);
+    if (!file || !student?.matricNumber) {
       toast.error("Please provide all fields");
       return;
     }
 
     try {
-      toast.info("Uploading signature...");
+      toast.info("Uploading Profile Image...");
 
       const response = await axios.patch(
-        "/api/user/staff/upload-signature",
+        "/api/user/student/upload-profile",
         formData,
         {
           headers: {
@@ -51,18 +51,19 @@ const user = () => {
       );
      
       
-      const signatureUrl = response.data.staff.signatureUrl;
+      const profileImageUrl = response.data.student.profileImageUrl;
+      console.log("Profile Image URL:", profileImageUrl);
 
-      const storedStaff = JSON.parse(localStorage.getItem("staff"));
-      const updatedStaff = {
-        ...storedStaff,
-        signature: signatureUrl,
+      const storedStudent = JSON.parse(localStorage.getItem("student"));
+      const updatedStudent = {
+        ...storedStudent,
+        profileImg: profileImageUrl,
       };
-      localStorage.setItem("staff", JSON.stringify(updatedStaff));
-      console.log("Updated staff:", updatedStaff);
+      localStorage.setItem("student", JSON.stringify(updatedStudent));
+      console.log("Updated student:", updatedStudent);
       if (response.status === 200) {
         toast.success("Signature uploaded successfully");
-        setSignature(response.data.staff.signature);
+        setProfileImg(response.data.student.profileImageUrl);
         setFile(null);
         setPreview(null);
       } else {
@@ -85,13 +86,13 @@ const user = () => {
               <label>Name</label>
               <input
                 type="text"
-                value={`${staff?.firstName} ${staff?.lastName}`}
+                value={`${student?.firstName} ${student?.lastName}`}
                 disabled
               />
             </div>
             <div className={styles.formGroup}>
-              <label>Staff_Id</label>
-              <input type="text" value={`${staff?.staff_id} `} disabled />
+              <label>Matric No</label>
+              <input type="text" value={`${student?.matricNumber} `} disabled />
             </div>
             <div className={`${styles.formGroup} ${styles.fileUpload}`}>
               <input

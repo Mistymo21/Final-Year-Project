@@ -2,26 +2,6 @@ import connect from "@/database/db.js";
 import { NextResponse } from "next/server";
 import { ClearanceSubmission } from "@/lib/models.js";
 
-// Ordered units list
-const Units = [
-  "Head of Department",
-  "Faculty Officer",
-  "Dean of Faculty",
-  "Hostel Warden",
-  "Director, Clinic",
-  "Director of Sports",
-  "Director of Works",
-  "University Librarian",
-  "Dean, Student Affairs",
-  "Stores Officer",
-  "Accountant (Students)",
-  "University Alumni Association",
-  "Director, CPPS (Top-Up only)",
-  "Director, IOE (Sandwich only)",
-  "Studio Manager",
-];
-
-// Slug to full name mapping
 const unitSlugMap = {
   HOD: "Head of Department",
   FO: "Faculty Officer",
@@ -54,28 +34,59 @@ export async function GET(req) {
       );
     }
 
-    const fullUnitName = unitSlugMap[unitSlug]; // <- removed .toLowerCase()
+    const fullUnitName = unitSlugMap[unitSlug];
 
     if (!fullUnitName) {
       return NextResponse.json({ message: "Invalid unit" }, { status: 400 });
     }
 
-    const index = Units.indexOf(fullUnitName);
+    // Get all submissions where the current clearance stage's unit matches the staff's unit
+    const allSubmissions = await ClearanceSubmission.find();
 
-    if (index === -1) {
-      return NextResponse.json(
-        { message: "Unit not found in list" },
-        { status: 400 }
-      );
-    }
-
-    const submission = await ClearanceSubmission.find({
-      currentStageIndex: index,
+    // Filter only those whose current clearance stage matches this staff unit
+    const filtered = allSubmissions.filter((submission) => {
+      const currentStage = submission.clearanceHistory[submission.currentStageIndex];
+      return currentStage && currentStage.unit === fullUnitName;
     });
 
-    return NextResponse.json({ submission }, { status: 200 });
+    // Calculate counts from filtered submissions
+    
+    
+  const total = filtered.length;
+
+const approved = filtered.filter((s) =>
+  s.clearanceHistory.some(
+    (h) => h.unit === fullUnitName && h.status === "approved"
+  )
+).length;
+
+const rejected = filtered.filter((s) =>
+  s.clearanceHistory.some(
+    (h) => h.unit === fullUnitName && h.status === "rejected"
+  )
+).length;
+
+const pending = filtered.filter((s) =>
+  s.clearanceHistory.some(
+    (h) => h.unit === fullUnitName && h.status === "pending"
+  )
+).length;
+
+    return NextResponse.json(
+      {
+        total,
+        approved,
+        rejected,
+        pending,
+        submission: filtered, // only send filtered submissions to frontend
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Error occurred" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Something went wrong" },
+      { status: 500 }
+    );
   }
 }

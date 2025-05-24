@@ -12,40 +12,24 @@ export async function GET(Request) {
       { status: 400 }
     );
   }
+
   try {
     await connect();
 
-    const record = await ClearanceSubmission.findOne({ matricNo });
-    if (!record) {
+    // Find all clearance records for this student
+    const records = await ClearanceSubmission.find({ matricNo });
+
+    if (!records || records.length === 0) {
       return NextResponse.json(
         { message: "No clearance data found" },
         { status: 404 }
       );
     }
 
-    const {
-      reviewedBy,
-      studentName,
-      department,
-      faculty,
-      staffsignature,
-      updatedAt,
-      status,
-      comment,
-    } = record;
-
-    return NextResponse.json({
-      reviewedBy,
-      status,
-      staffsignature,
-      comment,
-      studentName,
-      department,
-      faculty,
-      updatedAt,
-    });
+    // Return full array of clearance records
+    return NextResponse.json(records);
   } catch (error) {
-    console.log(error);
+    console.error("Clearance fetch error:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
       { status: 500 }

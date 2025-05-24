@@ -1,9 +1,9 @@
 import React from 'react'
-import User from '@/components/ui/User/user'
+import UserStu from '@/components/ui/UserStu/userStu'
 const page = () => {
   return (
     <div>
-      <User/>
+      <UserStu/>
     </div>
   )
 }

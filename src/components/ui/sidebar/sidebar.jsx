@@ -24,7 +24,7 @@ const menuItems = [
     list: [
       {
         title: "Dashboard",
-        path: "/Staff/LA",
+        path: "/Staff/HOD",
         icon: <MdDashboard />,
       },
       {

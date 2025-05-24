@@ -28,6 +28,13 @@ const unitMap = {
 const StudentTable = () => {
   const [students, setStudents] = useState([]);
   const [staffUnit, setStaffUnit] = useState("");
+  const [stats, setStats] = useState({
+    total: 0,
+    approved: 0,
+    rejected: 0,
+    inProgress: 0,
+    pending: 0,
+  });
 
   useEffect(() => {
     const staffData = localStorage.getItem("staff");
@@ -43,42 +50,55 @@ const StudentTable = () => {
       if (!staffUnit) return;
 
       try {
-        // Use axios for the GET request
         const { data } = await axios.get(
           `/api/clearance/student/getStudentSubmission`,
-          { params: { unit: staffUnit } }
+          {
+            params: { unit: staffUnit },
+          }
         );
+
+        setStats({
+          total: data.total || 0,
+          approved: data.approved || 0,
+          rejected: data.rejected || 0,
+          inProgress: data.inProgress || 0,
+          pending: data.pending || 0,
+        });
 
         setStudents(data.submission || []);
       } catch (error) {
         console.error("Error fetching submissions:", error);
         setStudents([]);
+        setStats({
+          total: 0,
+          approved: 0,
+          rejected: 0,
+          inProgress: 0,
+          pending: 0,
+        });
       }
     };
 
     fetchSubmissions();
   }, [staffUnit]);
 
-  const totalStudents = students.length;
-  const clearedStudents = students.filter((s) => s.status === "approved").length;
-  const rejectedStudents = students.filter((s) => s.status === "rejected").length;
-
   return (
     <div className={styles.container}>
       <h1>Dashboard</h1>
       <div className={styles.boxes}>
         <div className={styles.box}>
-          <p>Number of students</p>
-          <span className={styles.total}>{totalStudents}</span>
+          <p>Number of students yet to be cleared</p>
+          <span className={styles.total}>{stats.total}</span>
         </div>
         <div className={styles.box}>
           <p>Number of students cleared</p>
-          <span className={styles.total}>{clearedStudents}</span>
+          <span className={styles.total}>{stats.approved}</span>
         </div>
         <div className={styles.box}>
           <p>Number of students rejected</p>
-          <span className={styles.total}>{rejectedStudents}</span>
+          <span className={styles.total}>{stats.rejected}</span>
         </div>
+   
       </div>
 
       <div className={styles.tableContainer}>
@@ -103,7 +123,10 @@ const StudentTable = () => {
                   <td>{student.faculty}</td>
                   <td>{moment(student.createdAt).format("DD/MM/YYYY")}</td>
                   <td>
-                    <Link href={`/Staff/SingleStudent/${student._id}`} className={styles.btn}>
+                    <Link
+                      href={`/Staff/SingleStudent/${student._id}`}
+                      className={styles.btn}
+                    >
                       <button>View</button>
                     </Link>
                   </td>

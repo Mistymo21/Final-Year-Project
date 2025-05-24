@@ -1,27 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/database/db";
-import { UploadImage } from "@/lib/upload-images";
-import { ClearanceSubmission } from "@/lib/models";
+import { ClearanceSubmission, Staff } from "@/lib/models";
 
 export async function PATCH(request, { params }) {
   await connect();
 
   const { id } = params;
 
-  try {
-    const formData = await request.formData();
-    const signature = formData.get("signature");
-    const reviewedBy = formData.get("reviewedBy");
 
-    if (!signature || typeof signature === "string") {
-      return NextResponse.json(
-        { message: "Signature file is required" },
-        { status: 400 }
-      );
+  try {
+    const body = await request.json();
+    const { unit } = body;
+
+    
+
+    if (!unit) {
+      return NextResponse.json({ message: "Unit is required" }, { status: 400 });
     }
 
-    const uploadedSignature = await UploadImage(signature, "image-upload");
+    // Find staff by unit
+    const staff = await Staff.findOne({ unit });
+    if (!staff || !staff.signatureUrl) {
+      return NextResponse.json({ message: "Staff or signature not found for unit" }, { status: 404 });
+    }
 
+    // Fetch student
     const student = await ClearanceSubmission.findById(id);
     if (!student) {
       return NextResponse.json({ message: "Student not found" }, { status: 404 });
@@ -30,48 +33,41 @@ export async function PATCH(request, { params }) {
     const currentIndex = student.currentStageIndex;
     const clearanceHistory = student.clearanceHistory || [];
 
-    if (clearanceHistory.length === 0) {
-      return NextResponse.json(
-        { message: "Clearance history is empty." },
-        { status: 400 }
-      );
+    if (
+      clearanceHistory.length === 0 ||
+      currentIndex === undefined ||
+      currentIndex < 0 ||
+      currentIndex >= clearanceHistory.length
+    ) {
+      return NextResponse.json({ message: "Invalid clearance stage index." }, { status: 400 });
     }
 
-    if (currentIndex < 0 || currentIndex >= clearanceHistory.length) {
-      return NextResponse.json(
-        { message: "Invalid clearance stage index." },
-        { status: 400 }
-      );
-    }
-
-    // Get unit name for dynamic comment
     const staffUnit = clearanceHistory[currentIndex].unit;
 
-    // Update current clearance stage
+    // Approve current stage
     clearanceHistory[currentIndex].status = "approved";
     clearanceHistory[currentIndex].comment = `Approved by ${staffUnit}`;
-    clearanceHistory[currentIndex].reviewedBy = reviewedBy || "Unknown Staff";
-    clearanceHistory[currentIndex].staffSignature = uploadedSignature.secure_url;
-    clearanceHistory[currentIndex].signaturePublicId = uploadedSignature.public_id;
+    clearanceHistory[currentIndex].reviewedBy = `${staff.firstName} ${staff.lastName}`;
+    clearanceHistory[currentIndex].staffSignature = staff.signatureUrl;
+    clearanceHistory[currentIndex].signaturePublicId = staff.signaturePublicId || null;
     clearanceHistory[currentIndex].updatedAt = new Date();
 
-    // Move to next stage if any
+    // Move to next stage
     const isLastStage = currentIndex >= clearanceHistory.length - 1;
-    const newStageIndex = isLastStage ? currentIndex : currentIndex + 1;
-
-    // Update main student record
+    student.currentStageIndex = isLastStage ? currentIndex : currentIndex + 1;
     student.clearanceHistory = clearanceHistory;
-    student.currentStageIndex = newStageIndex;
 
     await student.save();
 
     return NextResponse.json(
-      { message: "Student approved and moved to next stage", data: student },
+      {
+        message: `Student approved by ${unit}`,
+        data: student,
+      },
       { status: 200 }
     );
-
   } catch (error) {
-    console.error("Approval Error:", error);
+    console.error("Approval Error:", error.stack || error.message);
     return NextResponse.json(
       { message: "Internal Server Error", error: error.message },
       { status: 500 }

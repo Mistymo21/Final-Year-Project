@@ -14,11 +14,16 @@ const SingleUserPage = () => {
   const [student, setStudent] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [staff, setStaff] = useState(null);
-  const [isAcceptModalOpen, setIsAcceptModalOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
-  const [signature, setSignature] = useState(null);
   const [rejectionComment, setRejectionComment] = useState("");
+  const [studentImage, setStudentImage] = useState(null);
 
+  useEffect(() => {
+    const storedStudentImage = JSON.parse(localStorage.getItem("student"));
+    if (storedStudentImage) {
+      setStudentImage(storedStudentImage);
+    }
+  }, []);
   useEffect(() => {
     const storedStaff = JSON.parse(localStorage.getItem("staff"));
     if (storedStaff) {
@@ -45,73 +50,69 @@ const SingleUserPage = () => {
     fetchStudent();
   }, [studentId]);
 
-  const handleAccept = () => {
-    setIsAcceptModalOpen(true);
-  };
+  // Directly approve without signature modal, sending stored signatureUrl
+  const handleAccept = async () => {
+    if (!staff?.signature) {
+      toast.error("Staff signature not found. Cannot approve.");
+      return;
+    }
 
-  const handleReject = () => {
-    setIsRejectModalOpen(true);
-  };
-
-  // Handle the approval request (with signature and comment)
- const handleSignatureUpload = async () => {
-  if (!signature) {
-    alert("Please upload a signature.");
-    return;
-  }
+    
 
   try {
-    const formData = new FormData();
-    formData.append("signature", signature);
-    formData.append("reviewedBy", `${staff?.firstName} ${staff?.lastName}` || "Unknown Staff");
+    setLoading(true);
 
     const response = await axios.patch(
       `/api/clearance/staff/approve/${studentId}`,
-      formData,
       {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        unit: staff.unit,
+        reviewedByName: `${staff.firstName} ${staff.lastName}`
       }
     );
 
     toast.success("Student approved!");
-    setIsAcceptModalOpen(false);
+    // Optionally refresh student data or redirect
   } catch (error) {
     console.error("Error approving student", error);
-    toast.error(error.response?.data?.message || "Error processing the approval.");
+    toast.error(error.response?.data?.message || "Error processing approval.");
+  } finally {
+    setLoading(false);
   }
 };
 
 
- const handleRejection = async () => {
-  if (!rejectionComment) {
-    toast.error("Please provide a reason for rejection.");
-    return;
-  }
+  const handleReject = async () => {
+    if (!rejectionComment) {
+      toast.error("Please provide a reason for rejection.");
+      return;
+    }
 
-  if (!staff?.unit) {
-    toast.error("Staff unit not found. Cannot reject.");
-    return;
-  }
+    if (!staff?.unit) {
+      toast.error("Staff unit not found. Cannot reject.");
+      return;
+    }
 
-  try {
-    const response = await axios.patch(
-      `/api/clearance/staff/reject/${studentId}`,
-      {
-        comment: rejectionComment,
-        unit: staff.unit, // send unit instead of staffId
-        reviewerName: `${staff?.firstName} ${staff?.lastName}`,
-      }
-    );
+    try {
+      setLoading(true);
+      const response = await axios.patch(
+        `/api/clearance/staff/reject/${studentId}`,
+        {
+          comment: rejectionComment,
+          unit: staff.unit,
+          reviewerName: `${staff?.firstName} ${staff?.lastName}`,
+        }
+      );
 
-    toast.success("Student rejected!");
-    setIsRejectModalOpen(false);
-  } catch (error) {
-    console.error("Error rejecting student", error);
-    toast.error(error.response?.data?.message || "Error processing the rejection.");
-  }
-};
+      toast.success("Student rejected!");
+      setIsRejectModalOpen(false);
+      setRejectionComment("");
+    } catch (error) {
+      console.error("Error rejecting student", error);
+      toast.error(error.response?.data?.message || "Error processing the rejection.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -120,7 +121,7 @@ const SingleUserPage = () => {
       ) : student ? (
         <div className={styles.container}>
           <div className={styles.Info}>
-            <Image src={Avatar} alt="Student Avatar" className={styles.img} />
+            <Image src={studentImage?.profileImg || Avatar} alt="Student Avatar" className={styles.img} width={200} height={200}/>
           </div>
           <div className={styles.seperator}></div>
 
@@ -128,7 +129,7 @@ const SingleUserPage = () => {
             <p>
               Name: <strong>{student.studentName}</strong>
             </p>
-            <p>
+            <p>  
               Matric No: <strong>{student.matricNo}</strong>
             </p>
             <p>
@@ -154,7 +155,7 @@ const SingleUserPage = () => {
             </div>
 
             <div className={styles.btns}>
-              <button className={styles.reject} onClick={handleReject}>
+              <button className={styles.reject} onClick={() => setIsRejectModalOpen(true)}>
                 Reject
               </button>
               <button className={styles.accept} onClick={handleAccept}>
@@ -162,25 +163,6 @@ const SingleUserPage = () => {
               </button>
             </div>
           </div>
-
-          {/* Accept Modal */}
-          {isAcceptModalOpen && (
-            <div className={styles.modal}>
-              <div className={styles.modalContent}>
-                <h2>Upload Signature</h2>
-                <input
-                  type="file"
-                  onChange={(e) => setSignature(e.target.files[0])}
-                />
-                <div className={styles.modalButtons}>
-                  <button onClick={handleSignatureUpload}>Submit</button>
-                  <button onClick={() => setIsAcceptModalOpen(false)}>
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Reject Modal */}
           {isRejectModalOpen && (
@@ -193,7 +175,7 @@ const SingleUserPage = () => {
                   placeholder="Reason for rejection..."
                 />
                 <div className={styles.modalButtons}>
-                  <button onClick={handleRejection}>Submit</button>
+                  <button onClick={handleReject}>Submit</button>
                   <button onClick={() => setIsRejectModalOpen(false)}>
                     Cancel
                   </button>

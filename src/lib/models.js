@@ -37,6 +37,10 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profileImageUrl: {
+      type: String,
+      default: "",
+    },
 
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
