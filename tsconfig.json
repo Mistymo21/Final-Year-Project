@@ -27,12 +27,17 @@
       }
     ]
   },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-, "src/app/api/uploads/route", "src/database/db.js", "src/models/staff.js", "src/models/Student.js"  ],
+"include": [
+  "next-env.d.ts",
+  ".next/types/**/*.ts",
+  "src/**/*.ts",
+  "src/**/*.tsx",
+  "src/app/api/uploads/route",
+  "src/database/db.js",
+  "src/models/staff.js",
+  "src/models/Student.js",
+  "src/app/Staff/(StaffPage)/layout.jsx"
+],
   "exclude": [
     "node_modules"
   ]
