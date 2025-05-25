@@ -1,5 +1,5 @@
 /* Background container */
-.wrap-container {
+.container {
   background: url('../../Assets/bg-2.jpg') no-repeat center center;
   background-size: cover;
   height: 100vh;
@@ -10,7 +10,7 @@
 }
 
 /* Form wrapper */
-.Loginwrapper {
+.wrapper {
   width: 32%;
   max-width: 450px;
   margin: 0 auto;
@@ -18,7 +18,7 @@
 }
 
 /* Form styling */
-.slogin-form {
+.form{
   border: 1px solid white;
   padding: 25px;
   background: rgba(255, 255, 255, 0.18);
@@ -27,14 +27,14 @@
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
-.heading {
+.header {
   color: white;
   font-size: 28px;
   margin-bottom: 20px;
 }
 
 /* Form inputs layout */
-.login-formD {
+.formCon {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
@@ -43,14 +43,14 @@
   margin: auto;
 }
 
-.login-formD label {
+.formCon label {
   color: white;
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.login-formD input {
+.formCon input {
   border: none;
   outline: none;
   color: black;
@@ -118,25 +118,26 @@
 
 /* Screens up to 540px: switch to column layout */
 @media (max-width: 540px) {
-  .Loginwrapper {
+  .wrapper {
     width: 90%;
     max-width: 380px;
   }
 
-  .slogin-form {
+  .form{
     padding: 15px;
   }
 
-  .login-formD {
+  .formCon {
     display: flex;
     flex-direction: column;
     gap: 12px;
     width: 100%;
   }
 
-  .login-formD label {
+  .formCon label {
     text-align: left;
   }
+
 
   .btn {
     font-size: 14px;
@@ -145,14 +146,15 @@
 
 /* Screens up to 460px */
 @media (max-width: 460px) {
-  .Loginwrapper {
+  .wrapper {
     width: 90%;
-    max-width: 350px;
+    max-width: 400px;
   }
 
-  .slogin-form {
+  .form{
     padding: 12px;
   }
+
 
   .btn {
     font-size: 13px;
@@ -161,16 +163,18 @@
 
 /* Screens up to 360px */
 @media (max-width: 360px) {
-  .Loginwrapper {
+  .wrapper {
     width: 95%;
     max-width: 320px;
+    border: 1px solid red;
   }
 
-  .slogin-form {
+  .form{
     padding: 10px;
   }
 
-  .login-formD input {
+
+  .formCon input {
     padding: 8px;
   }
 

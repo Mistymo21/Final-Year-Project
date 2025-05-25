@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import styles from "./sidebar.module.css";
 import {
@@ -16,7 +16,9 @@ import {
 import MenuLink from "./menuLink/menuLink";
 import Image from "next/image";
 import Noava from "../../../../public/noavatar.png";
-
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const menuItems = [
   {
@@ -29,27 +31,22 @@ const menuItems = [
       },
       {
         title: "Users",
-        path:"/Staff/User",
+        path: "/Staff/User",
         icon: <MdSupervisedUserCircle />,
       },
-     
     ],
   },
-  {
-    title: "User",
-    list: [
-      {
-        title: "Settings",
-        path: "/Staff/Settings",
-        icon: <MdOutlineSettings />,
-      },
-      {
-        title: "Help",
-        path: "/dashboard/help",
-        icon: <MdHelpCenter />,
-      },
-    ],
-  },
+  // {
+  //   title: "User",
+  //   list: [
+  //     {
+  //       title: "Settings",
+  //       path: "/Staff/Settings",
+  //       icon: <MdOutlineSettings />,
+  //     },
+
+  //   ],
+  // },
 ];
 const studentItems = [
   {
@@ -62,30 +59,26 @@ const studentItems = [
       },
       {
         title: "User",
-        path:"/Student/User",
+        path: "/Student/StudentPage/User",
         icon: <MdSupervisedUserCircle />,
       },
+    ],
+  },
+  // {
+  //   title: "User",
+  //   list: [
+  //     {
+  //       title: "Settings",
+  //       path: "Student/StudentPage/settings",
+  //       icon: <MdOutlineSettings />,
+  //     },
      
-    ],
-  },
-  {
-    title: "User",
-    list: [
-      {
-        title: "Settings",
-        path: "Staff/settings",
-        icon: <MdOutlineSettings />,
-      },
-      {
-        title: "Help",
-        path: "/dashboard/help",
-        icon: <MdHelpCenter />,
-      },
-    ],
-  },
+  //   ],
+  // },
 ];
 
 export const Sidebar = () => {
+  const router = useRouter()
   const [staff, setStaff] = React.useState(null);
 
   React.useEffect(() => {
@@ -93,7 +86,19 @@ export const Sidebar = () => {
     if (storedStaff) {
       setStaff(JSON.parse(storedStaff));
     }
-  }, []); 
+  }, []);
+
+  const StaffLogOut = async () => {
+    toast.info("Logging Out.....");
+    try {
+      const res = await axios.get("/api/user/staff/logout");
+      toast.success("Logged out successful");
+      router.push("/Staff/Login");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -106,7 +111,9 @@ export const Sidebar = () => {
           className={styles.userImage}
         />
         <div className={styles.userDetails}>
-          <span className={styles.username}>{`${staff?.firstName} ${staff?.lastName}` || ""}</span>
+          <span className={styles.username}>
+            {`${staff?.firstName} ${staff?.lastName}` || ""}
+          </span>
           <span className={styles.usertitle}>{staff?.unit}</span>
         </div>
       </div>
@@ -122,7 +129,7 @@ export const Sidebar = () => {
           </li>
         ))}
       </ul>
-      <button className={styles.logout}>
+      <button className={styles.logout} onClick={StaffLogOut}>
         <MdLogout />
         Logout
       </button>
@@ -130,16 +137,31 @@ export const Sidebar = () => {
   );
 };
 
+export const StudentSidebar = () => {
+  const router = useRouter();
 
-
-export const StudentSidebar = () =>{
   const [student, setStudent] = React.useState(null);
   React.useEffect(() => {
     const storedStudent = localStorage.getItem("student");
     if (storedStudent) {
       setStudent(JSON.parse(storedStudent));
     }
-  }, []); 
+  }, []);
+
+  const StudentLogOut = async () => {
+    toast.info("Logging Out......");
+
+    try {
+      const res = await axios.get("/api/user/student/logout");
+      toast.success("Logged out succesful");
+
+      router.push("/Student/Login");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className={styles.containers}>
       <div className={styles.users}>
@@ -151,7 +173,9 @@ export const StudentSidebar = () =>{
           className={styles.userImages}
         />
         <div className={styles.userDetail}>
-        <span className={styles.usernames}>{`${student?.firstName} ${student?.lastName}` || ""}</span>
+          <span className={styles.usernames}>
+            {`${student?.firstName} ${student?.lastName}` || ""}
+          </span>
           <span className={styles.usertitles}> 400 </span>
         </div>
       </div>
@@ -167,10 +191,10 @@ export const StudentSidebar = () =>{
           </li>
         ))}
       </ul>
-      <button className={styles.logouts}>
+      <button className={styles.logouts} onClick={StudentLogOut}>
         <MdLogout />
         Logout
       </button>
     </div>
-  )
-}
+  );
+};

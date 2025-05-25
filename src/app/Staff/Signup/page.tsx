@@ -4,27 +4,25 @@ import React, { useEffect } from "react";
 import styles from "./StaffReg.module.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 
 const Units = [
-      "Head of Department",
-      "Faculty Officer",
-      "Dean of Faculty",
-      "Hostel Warden",
-      "Director, Clinic",
-      "Director of Sports",
-      "Director of Works",
-      "University Librarian",
-      "Dean, Student Affairs",
-      "Stores Officer",
-      "Accountant (Students)",
-      "University Alumni Association",
-      "Director, CPPS (Top-Up only)",
-      "Director, IOE (Sandwich only)",
-      "Studio Manager",
-    ];
-
-
+  "Head of Department",
+  "Faculty Officer",
+  "Dean of Faculty",
+  "Hostel Warden",
+  "Director, Clinic",
+  "Director of Sports",
+  "Director of Works",
+  "University Librarian",
+  "Dean, Student Affairs",
+  "Stores Officer",
+  "Accountant (Students)",
+  "University Alumni Association",
+  "Director, CPPS (Top-Up only)",
+  "Director, IOE (Sandwich only)",
+  "Studio Manager",
+];
 
 function SignupPage() {
   const router = useRouter();
@@ -56,6 +54,9 @@ function SignupPage() {
       setLoading(true);
       const response = await axios.post("/api/user/staff/signup", user);
       console.log("Signup successful", response.data);
+      if (response.data === 200) {
+        toast.success("Login Successful");
+      }
       router.push("/Staff/Login");
     } catch (error) {
       if (error.response) {
@@ -76,7 +77,7 @@ function SignupPage() {
       user.password.length > 0 &&
       user.staff_id.length > 0 &&
       user.unit.length > 0 &&
-      user.faculty.length > 0 
+      user.faculty.length > 0
     ) {
       setButtonDisabled(false);
     } else {
@@ -158,7 +159,7 @@ function SignupPage() {
                       {unit}
                     </option>
                   ))}
-                                  </select>
+                </select>
 
                 <label htmlFor="faculty">Faculty</label>
                 <select
@@ -176,8 +177,6 @@ function SignupPage() {
                     Faculty Of Natural and Applied Science
                   </option>
                 </select>
-
-  
 
                 <label htmlFor="password">Password</label>
                 <input

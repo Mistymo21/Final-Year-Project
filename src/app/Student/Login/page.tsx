@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
-import "./Login.css";
-import Link from "next/link";
+import styles from "./login.module.css";
+// import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+
 
 
 function Loginpage() {
@@ -39,7 +40,7 @@ function Loginpage() {
   };
 
   useEffect(() => {
-    console.log("User state updated:", user); // Debug user state
+
     if (user.matric_no.length === 0 || user.password.length === 0) {
       setButtonDisabled(true);
     } else {
@@ -49,14 +50,14 @@ function Loginpage() {
 
   return (
     <>
-      <div className="wrap-container">
-        <div className="Loginwrapper">
-          <div className="log-mtx">
-            <form action="#" className="slogin-form">
-              <h1 className="heading">
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={styles.mt}>
+            <form action="#" className={styles.form}>
+              <h1 className={styles.header}>
                 {isloading ? "Processing" : "Login"}
               </h1>
-              <div className="login-formD">
+              <div className={styles.formCon}>
                 <label htmlFor="#">Matric no</label>
                 <input
                   type="text"
@@ -78,9 +79,9 @@ function Loginpage() {
               </div>
              
 
-              <div className="btnWrap">
+              <div className={styles.btnWrap}>
                 <button
-                  className="btn"
+                  className={styles.btn}
                   onClick={(e) => {
                     e.preventDefault();
                     Login();
@@ -89,13 +90,13 @@ function Loginpage() {
                   {buttonDisabled ? "No Login" : "Login"}
                 </button>
               </div>
-              <div className="sfgnBtn mb-3">
+              {/* <div className="sfgnBtn mb-3">
                 <span>
                   <Link href="Login/ForgotPassword">
                     Forgot Password? Click here...
                   </Link>
                 </span>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>

@@ -4,5 +4,6 @@
 
     ],
     "reactSnippets.settings.prettierEnabled": true,
-    "prettier.bracketSameLine": true
+    "prettier.bracketSameLine": true,
+    "postman.settings.dotenv-detection-notification-visibility": false
 }
