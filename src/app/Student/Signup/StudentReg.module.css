@@ -1,5 +1,7 @@
 .container {
-  background: url("../../Assets/bg-2.jpg") no-repeat center center;
+  /* background: url("../../Assets/bg-2.jpg") no-repeat center center; */
+  background-color: #000;
+
   background-size: cover;
   height: 100vh;
   width: 100%;
