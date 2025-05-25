@@ -1,6 +1,6 @@
 // types/next.d.ts
 
-import { NextApiRequest } from 'next';
+
 import { Express } from 'express';
 
 declare module 'next' {

@@ -28,6 +28,7 @@ function SignupPage() {
     e.preventDefault();
     if (user.password !== user.confirm_password) {
       setConfirmPasswordMismatchError("Password does not match!!!");
+      setError(true)
       return;
     }
     try {
