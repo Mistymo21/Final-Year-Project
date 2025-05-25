@@ -1,5 +1,5 @@
 import connect from "@/database/db"; 
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import { Student } from "@/lib/models";
 
 import jwt from "jsonwebtoken";
@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 
 connect();
 
-export async function POST(request: NextRequest) {
+export async function POST(request) {
   try {
     const reqBody = await request.json();
     const { matric_no, password } = reqBody;  // Expecting matric_no and password only
