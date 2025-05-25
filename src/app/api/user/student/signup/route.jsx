@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import {  NextResponse } from 'next/server';
 import connect from '@/database/db';  // Assuming the database connection function
 import { Student } from '@/lib/models'; // Assuming your Mongoose model
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-export async function POST(request: NextRequest) {
+export async function POST(request) {
   try {
     // Connect to the database
     await connect();
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     const savedNewUser = await newlyCreatedUser.save();
 
     // Create JWT token
-    const token = jwt.sign({ id: savedNewUser._id }, process.env.JWT_SECRET_KEY!, { expiresIn: '1d' });
+    const token = jwt.sign({ id: savedNewUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
     console.log('Token:', token); // Log the token for debugging
     // Return response with token and user details
     return NextResponse.json(

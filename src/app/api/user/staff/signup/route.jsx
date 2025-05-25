@@ -1,12 +1,12 @@
 import  connect  from "@/database/db";
 import {Staff} from "@/lib/models";
 import jwt from "jsonwebtoken";
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 
 
-export async function POST(request: NextRequest) {
+export async function POST(request) {
   try {
     await connect();
     const reqBody = await request.json();
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     // Save new user
     const savedNewUser = await newlyCreatedUser.save();
 
-    const token = jwt.sign({id: savedNewUser._id}, process.env.JWT_SECRET_KEY!, { expiresIn: "1d" });
+    const token = jwt.sign({id: savedNewUser._id}, process.env.JWT_SECRET_KEY, { expiresIn: "1d" });
     console.log(token)
 
     

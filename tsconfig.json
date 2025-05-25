@@ -38,7 +38,7 @@
   "src/models/staff.js",
   "src/models/Student.js",
   "src/app/Staff/(StaffPage)/layout.jsx"
-],
+, "src/app/api/user/student/signup/route.jsx", "src/app/api/user/student/logout/route.jsx", "src/app/api/user/staff/logout/route.jsx", "src/app/api/user/staff/login/route.jsx", "src/app/api/user/staff/signup/route.jsx"],
   "exclude": [
     "node_modules"
   ]
