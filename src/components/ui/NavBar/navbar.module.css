@@ -1,0 +1,86 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    margin-top: 10px;
+}
+
+
+.left{
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+}
+
+
+.left span {
+  font-family: "Poppins", sans-serif;
+}
+
+.right{
+    display: flex;
+    gap: 30px;
+    padding: 0 70px;
+
+
+}
+
+
+.dropDown {
+  position: relative;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.btn:hover,
+.btn:focus {
+  color: #00ffcc;
+}
+
+.link {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease forwards;
+  min-width: 150px;
+  z-index: 10;
+}
+
+.link a {
+  color: #fff;
+  padding: 6px 10px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.link a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}

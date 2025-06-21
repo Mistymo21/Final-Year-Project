@@ -1,14 +1,82 @@
 .container {
-    /* background: url('../Assets/bg-2.jpg') no-repeat center center; */
-    background-color: #000;
-    background-size: cover;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
+  background-color: #000;
+  width: 100%;
+  color: white;
+  padding: 20px 70px;
+}
+
+.desc {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.link {
+  display: flex;
+  gap: 10px;
+}
+
+.link a:link {
+  border: 1px solid white;
+  padding: 5px 30px;
+  border-radius: 5px;
+  background-color: rgb(62, 62, 228);
+}
+
+.details {
+  margin-top: 30px;
+}
+
+.descLogo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.descLogo span {
+  font-weight: bold;
+  color: rgb(62, 62, 228);
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+}
+
+.descLogo p {
+  width: 60%;
+  margin-top: 30px;
+  color: white;
+  text-align: center;
+}
+
+.mt {
+  margin-top: 30px;
+}
+
+.roleDesc {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  font-size: 17px;
+  margin-top: 30px;
+  margin-left: 50px;
+}
+
+.roleDesc span{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 30px;
+}
+
+/*   
   .buttons {
     display: flex;
     flex-wrap: wrap;
@@ -46,11 +114,10 @@
   }
   
   /* Mobile view */
-  @media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
     .buttons button {
       width: 150px;
       height: 150px;
       font-size: 18px;
     }
-  }
-  
+  } */
