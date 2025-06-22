@@ -15,6 +15,7 @@ export async function POST(request) {
     const faculty = formData.get("faculty");
     const level = formData.get("level");
     const staff_id = formData.get("staff_id");
+    const profile_image = formData.get("profile_image");
 
     if (!studentName || !matricNo || !department || !faculty || !level || !profile_image) {
       return NextResponse.json(
