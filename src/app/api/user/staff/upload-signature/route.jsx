@@ -19,6 +19,11 @@ export async function PATCH(request) {
       );
     }
 
+     console.log("staffid", staff_id)
+        console.log("image", image)
+        console.log("image type", typeof image)
+        console.log("File is Blob", image instanceof Blob)
+
     const staff = await Staff.findOne({ staff_id });
 
     if (!staff) {

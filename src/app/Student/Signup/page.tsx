@@ -80,6 +80,7 @@ function SignupPage() {
   return (
     <>
       <div className={styles.container}>
+    
         <div className={styles.wrap}>
           <div className={styles.mt}>
             <form action="#" className={styles.form} onSubmit={onSignupStud}>
@@ -187,7 +188,7 @@ function SignupPage() {
                   }
                 />
                 {confirmPasswordMismatchError && (
-                  <p style={{ color: "red" }}>{confirmPasswordMismatchError}</p>
+                  <p style={{ color: "white" }}>{confirmPasswordMismatchError}</p>
                 )}
               </div>
               <div className={styles.btnWrap}>

@@ -53,7 +53,7 @@ const SingleUserPage = () => {
   // Directly approve without signature modal, sending stored signatureUrl
   const handleAccept = async () => {
     if (!staff?.signature) {
-      toast.error("Staff signature not found. Cannot approve.");
+      toast.error("Staff signature not found. Proceed to user to upload signature");
       return;
     }
 

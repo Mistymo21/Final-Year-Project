@@ -32,6 +32,9 @@ const user = () => {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("staff_id", staff?.staff_id);
+
+    
+   
     if (!file || !staff?.staff_id) {
       toast.error("Please provide all fields");
       return;
@@ -49,6 +52,7 @@ const user = () => {
           },
         }
       );
+      console.log(response.data)
      
       
       const signatureUrl = response.data.staff.signatureUrl;

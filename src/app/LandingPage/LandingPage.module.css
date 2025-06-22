@@ -1,54 +1,82 @@
 /* ========== BASE STYLES ========== */
 .container {
-  background-color: #000;
+  background: linear-gradient(135deg, #000 0%, #1a1a2e 100%);
   width: 100%;
   color: white;
-  padding: 20px 70px;
+  padding: 40px 70px;
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  animation: fadeSlideIn 0.8s ease-out;
+}
+
+/* Entrance animation for whole container */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .desc {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   margin-top: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .desc h1 {
-  font-size: 32px;
-  font-weight: bold;
-  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(to right, #00fff0, #007cf0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 1.2s ease-in;
 }
 
 .desc p {
   font-size: 18px;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #e0e0e0;
+  max-width: 700px;
+  animation: fadeIn 1.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .link {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .link a {
-  border: 1px solid white;
-  padding: 10px 30px;
-  border-radius: 5px;
-  background-color: rgb(62, 62, 228);
+  border: none;
+  padding: 12px 32px;
+  border-radius: 6px;
+  background: linear-gradient(to right, #007cf0, #00dfd8);
   color: white;
+  font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 223, 216, 0.3);
 }
 
 .link a:hover {
-  background-color: rgb(40, 40, 180);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 223, 216, 0.5);
 }
 
 .details {
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
 /* ===== Desc Section With Logo/Text ===== */
@@ -56,17 +84,16 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  font-size: 15px;
-  margin-top: 20px;
+  font-size: 16px;
+  margin-top: 40px;
   gap: 20px;
 }
 
 .descLogo span {
   font-weight: bold;
-  color: rgb(62, 62, 228);
+  color: #00dfd8;
   display: flex;
   flex-direction: column;
-  align-self: center;
   align-items: center;
 }
 
@@ -75,10 +102,7 @@
   margin-top: 30px;
   color: white;
   text-align: center;
-}
-
-.mt {
-  margin-top: 30px;
+  line-height: 1.6;
 }
 
 /* ===== Role Description Section ===== */
@@ -88,48 +112,54 @@
   flex-wrap: wrap;
   width: 90%;
   font-size: 17px;
-  margin-top: 30px;
+  margin-top: 50px;
   margin-left: 50px;
-  gap: 20px;
+  gap: 30px;
 }
 
 .roleDesc span {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
+  padding: 15px;
+  border-left: 3px solid #00fff0;
+  transition: background 0.3s ease;
+}
+
+.roleDesc span:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* ===== Footer ===== */
 .footer {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 50px;
   font-size: 14px;
-  color: #bbb;
+  color: #aaa;
 }
 
 /* ========== MOBILE VIEW ========== */
 @media screen and (max-width: 600px) {
   .container {
-    padding: 20px 15px;
-    background-size: cover;
-  }
-
-  .desc {
-    margin-top: 20px;
-    margin-bottom: 10px;
+    padding: 30px 20px;
   }
 
   .desc h1 {
-    font-size: 22px;
+    font-size: 26px;
+    text-align: center;
   }
 
   .desc p {
     font-size: 14px;
+    text-align: center;
   }
 
+  .link {
+    justify-content: center;
+  }
 
   .link a {
-    padding: 8px 20px;
+    padding: 10px 24px;
     font-size: 14px;
   }
 
@@ -149,7 +179,6 @@
     width: 100%;
     margin: 20px 0;
     font-size: 14px;
-    /* flex-direction: column; */
     margin-left: 0;
     align-items: center;
     text-align: center;

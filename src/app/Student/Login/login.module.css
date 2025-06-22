@@ -1,187 +1,141 @@
-/* Background container */
+/* ========== Modern Login Container ========== */
 .container {
-  /* background: url('../../Assets/bg-2.jpg') no-repeat center center; */
-  background-color: #000;
-
-  background-size: cover;
+   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* Form wrapper */
 .wrapper {
-  width: 32%;
-  max-width: 450px;
-  margin: 0 auto;
+  width: 90%;
+  max-width: 420px;
   text-align: center;
 }
 
-/* Form styling */
-.form{
-  border: 1px solid white;
-  padding: 25px;
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(8px);
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+/* Glass form */
+.form {
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.8s ease;
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .header {
-  color: white;
-  font-size: 28px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600;
   margin-bottom: 20px;
 }
 
-/* Form inputs layout */
+/* Inputs */
 .formCon {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  padding: 20px;
-  width: 90%;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 10px;
+  margin-bottom: 20px;
 }
 
 .formCon label {
-  color: white;
+  color: #ccc;
   font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 5px;
+  text-align: left;
 }
 
 .formCon input {
-  border: none;
-  outline: none;
-  color: black;
-  padding: 10px;
-  width: 100%;
-  border-radius: 6px;
-  box-sizing: border-box;
-  font-size: 15px;
-}
-
-/* Remember me and buttons */
-.Btns {
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  padding-left: 25px;
-  margin-top: -10px;
-}
-
-/* Button wrapper */
-.btnWrap {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-/* Main login button */
-.btn {
-  background: white;
-  padding: 12px;
-  width: 100%;
-  max-width: 200px;
-  border-radius: 10px;
+  padding: 12px 15px;
   font-size: 16px;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
   border: none;
+  border-radius: 8px;
+  background: #f2f2f2;
+  transition: all 0.3s ease;
 }
 
-.btn:hover {
-  background: black;
-  color: white;
+.formCon input:focus {
+  background: #fff;
+  outline: 2px solid #3e3ee4;
 }
 
-/* Forgot password link */
-.sfgnBtn {
-  color: white;
-  font-size: 14px;
+/* Remember me */
+.Btns {
+  color: #ccc;
+  font-size: 13px;
+  margin-bottom: 10px;
+  text-align: left;
+  padding-left: 20px;
+}
+
+/* Button */
+.btnWrap {
   margin-top: 10px;
 }
 
-.sfgnBtn a {
+.btn {
+  background: linear-gradient(90deg, #3e3ee4, #5e5ee4);
   color: white;
+  font-weight: bold;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  transition: transform 0.3s ease, background 0.3s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #2828a0;
+  transform: scale(1.03);
+}
+
+/* Forgot password */
+.sfgnBtn {
+  color: #aaa;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.sfgnBtn a {
+  color: #fff;
   text-decoration: underline;
 }
 
 .sfgnBtn a:hover {
-  color: lightgray;
+  color: #ccc;
 }
 
-/* ============================ */
-/* Media Queries for Responsiveness */
-/* ============================ */
-
-/* Screens up to 540px: switch to column layout */
+/* ========== Mobile Responsive ========== */
 @media (max-width: 540px) {
-  .wrapper {
-    width: 90%;
-    max-width: 380px;
+  .form {
+    padding: 20px;
   }
 
-  .form{
-    padding: 15px;
+  .header {
+    font-size: 24px;
   }
 
-  .formCon {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
+  .formCon input {
+    font-size: 14px;
   }
-
-  .formCon label {
-    text-align: left;
-  }
-
 
   .btn {
     font-size: 14px;
-  }
-}
-
-/* Screens up to 460px */
-@media (max-width: 460px) {
-  .wrapper {
-    width: 90%;
-    max-width: 400px;
-  }
-
-  .form{
-    padding: 12px;
-  }
-
-
-  .btn {
-    font-size: 13px;
-  }
-}
-
-/* Screens up to 360px */
-@media (max-width: 360px) {
-  .wrapper {
-    width: 95%;
-    max-width: 320px;
-    border: 1px solid red;
-  }
-
-  .form{
-    padding: 10px;
-  }
-
-
-  .formCon input {
-    padding: 8px;
-  }
-
-  .btn {
-    font-size: 12px;
-    padding: 10px;
   }
 }

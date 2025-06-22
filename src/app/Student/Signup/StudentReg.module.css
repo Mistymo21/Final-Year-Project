@@ -1,269 +1,102 @@
 .container {
-  /* background: url("../../Assets/bg-2.jpg") no-repeat center center; */
-  background-color: #000;
-
-  background-size: cover;
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow-y: scroll;
-}
-
-.mt {
   position: relative;
-  top: 30px;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+    margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  height: 100%;
+  width: 100%;
 }
 
 .wrap {
-  margin: 0 auto;
-  width: 90%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  padding: 40px;
+  width: 100%;
   max-width: 600px;
-  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 2;
 }
 
-.form {
-  border: 1px solid white;
-  color: black;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.2); /* Light transparent background */
-  backdrop-filter: blur(5px);
-  border-radius: 8px;
-  opacity: 0;
-  transform: translateY(40px);
-  animation: fadeSlideIn 0.8s ease-in-out forwards;
-}
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 .heading {
-  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #fff;
 }
 
 .formE {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin: 30px auto;
-  max-width: 90%;
 }
 
 .formE label {
-  color: white;
-  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #f0f0f0;
 }
-.formE select {
-  border: none;
-  outline: none;
-  padding: 10px;
-  border-radius: 5px;
-}
-.formE input {
+
+.formE input{
+  padding: 12px;
   width: 100%;
   border: none;
+  border-radius: 10px;
+  background: white;
+  color: #010000;
   outline: none;
-  color: black;
-  padding: 10px;
-  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+.formE select {
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: #010000;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.formE input:focus, .formE select:focus {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .btnWrap {
+  margin-top: 30px;
   display: flex;
   justify-content: center;
-  margin: 20px 0;
 }
 
 .btn {
-  background: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  width: auto;
-  font-size: 16px;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
+  background: #00c6ff;
+  background: linear-gradient(to right, #0072ff, #00c6ff);
   border: none;
+  padding: 14px 30px;
+  border-radius: 30px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-  background: black;
-  color: white;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
 }
-/* Mobile screens (≤ 540px) */
-@media (max-width: 540px) {
-  .wrap {
-    width: 95%;
-    max-width: 400px;
-  }
 
-  .form {
-    padding: 15px;
-    width: 100%;
-  }
-
-  /* Stack labels on top of inputs */
+/* Responsive */
+@media (max-width: 600px) {
   .formE {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-  }
-
-  .formE label {
-    display: block; /* Ensures label is above the input */
-    text-align: left;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .formE input {
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .btn {
-    width: 100%;
-    font-size: 14px;
-  }
-}
-
-/* Smaller mobile screens (≤ 460px) */
-@media (max-width: 460px) {
-  .wrap {
-    width: 90%;
-    max-width: 350px;
-  }
-
-  .form {
-    padding: 12px;
-  }
-
-  .btn {
-    font-size: 13px;
-  }
-}
-
-/* Extra small screens (≤ 360px) */
-@media (max-width: 360px) {
-  .wrap {
-    width: 95%;
-    max-width: 320px;
-  }
-
-  .form {
-    padding: 10px;
-  }
-
-  .formE input {
-    padding: 8px;
-  }
-
-  .btn {
-    font-size: 12px;
-    padding: 10px;
-  }
-}
-
-/* Tablet view (for screens ≤ 768px) */
-@media (max-width: 540px) {
-  .wrap {
-    width: 95%;
-    max-width: 400px;
-  }
-
-  .form {
-    padding: 15px;
-    width: 100%;
-    max-height: 90vh; /* Prevents the form from overflowing */
-    overflow-y: auto; /* Adds scrolling if necessary */
-  }
-
-  /* Stack labels on top of inputs */
-  .formE {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-  }
-
-  .formE label {
-    display: block; /* Places label above input */
-    text-align: left;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .formE input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    box-sizing: border-box; /* Prevents input from exceeding container width */
-  }
-
-  .btn {
-    width: 100%;
-    font-size: 14px;
-  }
-}
-
-/* Screens ≤ 460px */
-@media (max-width: 460px) {
-  .wrap {
-    width: 90%;
-    max-width: 350px;
-  }
-
-  .form {
-    padding: 12px;
-    max-height: 85vh;
-  }
-
-  .btn {
-    font-size: 13px;
-  }
-}
-
-/* Extra small screens ≤ 360px */
-@media (max-width: 360px) {
-  .wrap {
-    width: 95%;
-    max-width: 320px;
-  }
-
-  .form {
-    padding: 10px;
-    max-height: 80vh;
-  }
-
-  .formE input {
-    padding: 8px;
-  }
-
-  .btn {
-    font-size: 12px;
-    padding: 10px;
-  }
-}
-
-/* Larger tablet & small desktop screens (for screens ≤ 1024px) */
-@media (max-width: 1024px) {
-  .wrap {
-    max-width: 600px;
-  }
-
-  .formE {
-    grid-template-columns: 1fr 1fr; /* Two columns for better layout */
+    grid-template-columns: 1fr;
   }
 }
