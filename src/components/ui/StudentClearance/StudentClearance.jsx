@@ -92,6 +92,12 @@ const StudentClearance = () => {
     e.preventDefault();
     setLoading(true);
 
+
+     if (!student?.profileImg) {
+          toast.error("Student Image not found. Proceed to user to upload image");
+          return;
+        }
+
     if (images.length === 0) {
       alert("Please upload all required images.");
       setLoading(false);
@@ -216,7 +222,8 @@ const StudentClearance = () => {
             type="submit"
             disabled={loading}
             className={styles.submitButton}>
-            {loading ? "Uploading..." : "Upload All"}
+            {/* {loading ? "Uploading..." : "Upload All"} */}
+            Upload
           </button>
         </form>
       </div>
