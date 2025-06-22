@@ -52,7 +52,7 @@ const StudentClearance = () => {
             Authorization: `Bearer ${localStorage.getItem("studentToken")}`,
           },
         });
-       
+
         setClearanceData(response.data.clearance || {});
         console.log("Clearance data:", response.data);
       } catch (error) {
@@ -98,12 +98,15 @@ const StudentClearance = () => {
       return;
     }
 
+    
+
     const formData = new FormData();
     formData.append(
       "student_name",
       `${student?.firstName} ${student?.lastName}`
     );
     formData.append("matric_no", student?.matricNumber);
+    formData.append("profile_image", student?.profileImage);
     formData.append("department", student?.department);
     formData.append("faculty", student?.faculty);
     formData.append("level", "400");
@@ -112,6 +115,8 @@ const StudentClearance = () => {
     images.forEach((image) => {
       formData.append("images", image);
     });
+
+
 
     try {
       const response = await axios.post("/api/clearance/student", formData, {
@@ -207,7 +212,10 @@ const StudentClearance = () => {
               </div>
             </div>
           </div>
-          <button type="submit" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className={styles.submitButton}>
             {loading ? "Uploading..." : "Upload All"}
           </button>
         </form>
@@ -292,10 +300,12 @@ const StudentClearance = () => {
             })}
           </tbody>
         </table>
-        <div  className={styles.right}>
-                <Link href='/Student/Print' className={styles.link}>Print Clearance</Link>
-              </div>
       </div>
+       <div className={styles.right}>
+          <Link href="/Student/Print" className={styles.link}>
+            Print Clearance
+          </Link>
+        </div>
     </div>
   );
 };

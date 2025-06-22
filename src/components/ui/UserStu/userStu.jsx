@@ -62,7 +62,7 @@ const user = () => {
       localStorage.setItem("student", JSON.stringify(updatedStudent));
       console.log("Updated student:", updatedStudent);
       if (response.status === 200) {
-        toast.success("Signature uploaded successfully");
+        toast.success("Profile Image uploaded successfully");
         setProfileImg(response.data.student.profileImageUrl);
         setFile(null);
         setPreview(null);

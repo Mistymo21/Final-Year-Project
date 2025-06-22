@@ -110,3 +110,76 @@
 .btn button:hover {
   background-color: #246e70;
 }
+
+
+
+@media (max-width: 768px) {
+  .boxes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .box {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .tableContainer table th,
+  .tableContainer table td {
+    padding: 12px;
+    font-size: 14px;
+  }
+  .btn button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .container h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+  .total {
+    font-size: 28px;
+  }
+  .box p {
+    font-size: 14px;
+  }
+
+  .box {
+    padding: 20px;
+  }
+
+  .tableContainer {
+    overflow-x: auto;
+  }
+
+  .tableContainer table {
+    width: 100%;
+    min-width: 600px; /* Ensures the table is scrollable on smaller screens */
+  }
+  .tableContainer table th,
+  .tableContainer table td {
+    font-size: 14px;
+  }
+  .tableContainer table th {
+    padding: 12px;
+  }
+  .tableContainer table td {
+    padding: 10px;
+  }
+  .btn button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .btn {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .btn button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+}

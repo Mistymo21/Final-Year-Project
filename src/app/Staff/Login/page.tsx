@@ -5,8 +5,6 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import Notification from "@/components/ui/notification/notification";
-
 const Units = [
   "Head of Department",
   "Faculty Officer",
@@ -46,14 +44,9 @@ function LoginPage() {
         const staffUnit = response.data.staff.unit?.trim().toLowerCase();
         const selectedUnit = user.unit.trim().toLowerCase();
 
-        // Check if the selected unit matches the unit from the database
         if (selectedUnit !== staffUnit) {
           toast.error("Invalid credentials: Unit mismatch");
           return;
-        }else{
-        toast.success("Login Successful");
-
-
         }
 
         localStorage.setItem("staff", JSON.stringify(response.data.staff));
@@ -62,57 +55,59 @@ function LoginPage() {
         if (response.data.success) {
           setIsLoggedIn(true);
           toast.success(response.data.message);
-        }
 
-        switch (user.unit) {
-          case "Head of Department":
-            router.push("/Staff/HOD");
-            break;
-          case "Faculty Officer":
-            router.push("/Staff/FO");
-            break;
-          case "Dean of Faculty":
-            router.push("/Staff/DOF");
-            break;
-          case "Hostel Warden":
-            router.push("/Staff/HW");
-            break;
-          case "Director, Clinic":
-            router.push("/Staff/DC");
-            break;
-          case "Director of Sports":
-            router.push("/Staff/DOS");
-            break;
-          case "Director of Works":
-            router.push("/Staff/DOW");
-            break;
-          case "University Librarian":
-            router.push("/Staff/UL");
-            break;
-          case "Dean, Student Affairs":
-            router.push("/Staff/DSA");
-            break;
-          case "Stores Officer":
-            router.push("/Staff/SO");
-            break;
-          case "Accountant (Students)":
-            router.push("/Staff/AS");
-            break;
-          case "University Alumni Association":
-            router.push("/Staff/UAA");
-            break;
-          case "Director, CPPS (Top-Up only)":
-            router.push("/Staff/DCPPS");
-            break;
-          case "Director, IOE (Sandwich only)":
-            router.push("/Staff/DIOE");
-            break;
-          case "Studio Manager":
-            router.push("/Staff/SM");
-            break;
-          default:
-            toast.error("Invalid unit");
-
+          // Delay navigation to allow toast to show
+          setTimeout(() => {
+            switch (user.unit) {
+              case "Head of Department":
+                router.push("/Staff/HOD");
+                break;
+              case "Faculty Officer":
+                router.push("/Staff/FO");
+                break;
+              case "Dean of Faculty":
+                router.push("/Staff/DOF");
+                break;
+              case "Hostel Warden":
+                router.push("/Staff/HW");
+                break;
+              case "Director, Clinic":
+                router.push("/Staff/DC");
+                break;
+              case "Director of Sports":
+                router.push("/Staff/DOS");
+                break;
+              case "Director of Works":
+                router.push("/Staff/DOW");
+                break;
+              case "University Librarian":
+                router.push("/Staff/UL");
+                break;
+              case "Dean, Student Affairs":
+                router.push("/Staff/DSA");
+                break;
+              case "Stores Officer":
+                router.push("/Staff/SO");
+                break;
+              case "Accountant (Students)":
+                router.push("/Staff/AS");
+                break;
+              case "University Alumni Association":
+                router.push("/Staff/UAA");
+                break;
+              case "Director, CPPS (Top-Up only)":
+                router.push("/Staff/DCPPS");
+                break;
+              case "Director, IOE (Sandwich only)":
+                router.push("/Staff/DIOE");
+                break;
+              case "Studio Manager":
+                router.push("/Staff/SM");
+                break;
+              default:
+                toast.error("Invalid unit");
+            }
+          }, 1500); // wait 1.5 seconds before navigating
         }
       } else {
         toast.error("Invalid credentials");
@@ -134,12 +129,11 @@ function LoginPage() {
   }, [user]);
 
   if (isLoggedIn) {
-    return null; // or return a loading state or sidebar
+    return <p className={styles.loggingIn}>Logging you in...</p>;
   }
 
   return (
     <>
-      <Notification />
       <div className={styles.container}>
         <div className={styles.wrap}>
           <div className={styles.mt}>
@@ -149,10 +143,12 @@ function LoginPage() {
               onSubmit={(e) => {
                 e.preventDefault();
                 onLogin();
-              }}>
+              }}
+            >
               <h1 className={styles.heading}>
-                {isloading ? "Processing" : "Login"}
+                {isloading ? "Processing..." : "Login"}
               </h1>
+
               <div className={styles.formE}>
                 <label htmlFor="staff_id">Staff Id</label>
                 <input
@@ -161,7 +157,7 @@ function LoginPage() {
                   onChange={(e) =>
                     setUser({ ...user, staff_id: e.target.value })
                   }
-                  placeholder="Staff_id"
+                  placeholder="Staff ID"
                 />
 
                 <label htmlFor="password">Password</label>
@@ -179,7 +175,8 @@ function LoginPage() {
                   name="unit"
                   id="unit"
                   value={user.unit}
-                  onChange={(e) => setUser({ ...user, unit: e.target.value })}>
+                  onChange={(e) => setUser({ ...user, unit: e.target.value })}
+                >
                   <option value="">Choose unit</option>
                   {Units.map((unit, index) => (
                     <option key={index} value={unit}>

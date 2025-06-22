@@ -53,10 +53,13 @@ function SignupPage() {
     try {
       setLoading(true);
       const response = await axios.post("/api/user/staff/signup", user);
-      console.log("Signup successful", response.data);
-      if (response.data === 200) {
-        toast.success("Login Successful");
+      if (response.status === 201) {
+        toast.success("Signup Successful");
+      } else {
+        toast.error("Signup failed");
       }
+      // toast.success("Login Successful");
+ 
       router.push("/Staff/Login");
     } catch (error) {
       if (error.response) {

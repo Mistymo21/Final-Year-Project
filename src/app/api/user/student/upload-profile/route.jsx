@@ -37,8 +37,15 @@ export async function PATCH(request) {
       );
     }
 
+
+    
+
     student.profileImageUrl = uploadResult.secure_url; // Updated field name
     await student.save();
+
+    if(student.profileImageUrl === uploadResult.secure_url) {
+      console.log("Profile image updated successfully for student:", student.matric_no);
+    }
 
     return NextResponse.json(
       { message: "Profile Image uploaded successfully", student },

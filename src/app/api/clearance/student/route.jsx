@@ -16,7 +16,7 @@ export async function POST(request) {
     const level = formData.get("level");
     const staff_id = formData.get("staff_id");
 
-    if (!studentName || !matricNo || !department || !faculty || !level) {
+    if (!studentName || !matricNo || !department || !faculty || !level || !profile_image) {
       return NextResponse.json(
         { message: "All fields are required" },
         { status: 400 }
@@ -26,12 +26,12 @@ export async function POST(request) {
     const student = await Student.findOne({ matric_no: matricNo });
     const staff = await Staff.findOne({ staff_id });
 
-    if (!student || !staff) {
-      return NextResponse.json(
-        { message: "Invalid student or staff" },
-        { status: 404 }
-      );
-    }
+    // if (!student || !staff) {
+    //   return NextResponse.json(
+    //     { message: "Invalid student or staff" },
+    //     { status: 404 }
+    //   );
+    // }
 
     const existingSubmission = await ClearanceSubmission.findOne({ matricNo });
 

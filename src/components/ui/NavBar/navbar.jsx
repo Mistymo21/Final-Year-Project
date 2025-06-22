@@ -6,13 +6,9 @@ import Logo from "@/app/assets/logo_hui.png";
 import Link from "next/link";
 
 const lists = [
+
   {
     id: 1,
-    title: "Home",
-    url: "/",
-  },
-  {
-    id: 2,
     title: "Student",
     dropDown: [
       {
@@ -26,7 +22,7 @@ const lists = [
     ],
   },
   {
-    id: 3,
+    id: 2,
     title: "Staff",
     dropDown: [
       {
@@ -50,7 +46,7 @@ const Navbar = () => {
   return (
     <div className={styles.container}>
       <div className={styles.left}>
-        <Image src={Logo} alt="logo" width={200} />
+        <Image src={Logo} alt="logo" width={200} className={styles.img}/>
         <span>E-clearance System</span>
       </div>
       <div className={styles.right}>
