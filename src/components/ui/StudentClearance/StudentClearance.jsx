@@ -79,6 +79,8 @@ const StudentClearance = () => {
     }
   };
 
+  // Image Handler
+
   const handleImageDelete = (index) => {
     const updatedImages = [...images];
     const updatedPreviews = [...imagePreviews];

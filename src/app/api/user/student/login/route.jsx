@@ -54,7 +54,7 @@ export async function POST(request) {
           email: user.email,  // Optional: you can include email as well
         }
       },
-      { status: 200 }
+      { status: 200 } 
     );
     
  
